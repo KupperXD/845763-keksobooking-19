@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дима Тарасенко](https://up.htmlacademy.ru/javascript/19/user/845763).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Корякин].
 
 ---
 
