@@ -1,3 +1,5 @@
+'use strict';
+
 var DATA_BASE = {
   amountAdvents: 8,
   title: ['Красивый домик', 'Просторная квартирка', 'Уютное жилище', 'Большие аппортаменты', 'Укромный уголог', 'Берлога любовников'],
@@ -17,6 +19,7 @@ var DATA_BASE = {
   checkin: ['12:00', '13:00', '14:00'],
   checkout: ['12:00', '13:00', '14:00'],
   features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator'],
+  photos: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
   location: {
     x: {
       min: 250,
@@ -29,89 +32,89 @@ var DATA_BASE = {
   }
 };
 
-var getRandom = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+var getRandomValue = function (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-//Определяет рандомный заголовок.
-var getTitle = function (titles) {
-  var title = titles;
-  return title[getRandom(0, title.length)]
+var getRandomArray = function (array) {
+  var arrayRandom = array;
+
+  return arrayRandom.slice(0, getRandomValue(1, arrayRandom.length));
 };
 
-//Возвращает рандомную цену в заданных значениях.
-var getPrice = function (minPrice, maxPrice) {
-  return getRandom(minPrice, maxPrice);
-};
-
-//Возвращает рандомное значение типа жилья
-var getType = function () {
-  var type = DATA_BASE.type;
-  return type[getRandom(0, type.length)];
-};
-
-//Возвращает рандомное количество комнат
-var getRooms = function (minRooms, maxRooms) {
-  return getRandom(minRooms, maxRooms);
-};
-
-var getGuest = function () {
-  var minGuest = DATA_BASE.guests.min;
-  var maxGuest = DATA_BASE.guests.max;
-  var totalGuest = getRandom(minGuest, maxGuest);
-  return totalGuest;
-};
-
-var getCheckIn = function (time) {
-  var timeIn = time;
-  return timeIn[getRandom(0, time.length)];
-};
-
-var getCheckOut = function (time) {
-  var timeOut = time;
-  return timeOut[getRandom(0, time.length)]
-};
-
-var getFeatures = function (array) {
-  var features = array;
-  var featuresAmount = features.length;
-  features.length = getRandom(1, featuresAmount);
-  return features;
-};
-
-var getAdressX = function () {
-  var xMin = DATA_BASE.location.x.min;
-  var xMax = DATA_BASE.location.x.max;
-  var adressX = getRandom(xMin, xMax);
-  return adressX;
-};
-
-var getAdressY = function () {
-  var yMin = DATA_BASE.location.y.min;
-  var yMax = DATA_BASE.location.y.max;
-  var adressY = getRandom(yMin, yMax);
-  return adressY;
-};
-
-var avatarArray = [];
-
-var getAvatarArray = function (amount) {
-  for (var i = 0; i < amount; i++) {
-    avatarArray[i] = '0' + (i + 1);
+var renderArrayAvatarsLink = function () {
+  var array = [];
+  for (var i = 1; i <= DATA_BASE.amountAdvents; i++) {
+    array.push('img/avatars/user0' + i + '.png');
   }
-  return avatarArray;
+
+  return array;
 };
 
-var getAvatarItem = function (array) {
-  var randomItem = getRandom(0, array.length);
-  var avatarItem = array.splice(randomItem, 1);
-  return avatarItem[0];
+var avatarsLinkArray = renderArrayAvatarsLink();
+
+var getAdvert = function () {
+  var advert = {
+    author: {
+      avatar: avatarsLinkArray.splice(getRandomValue(0, avatarsLinkArray.length - 1), 1).join(),
+    },
+    offer: {
+      title: DATA_BASE.title[getRandomValue(0, DATA_BASE.title.length - 1)],
+      adress: getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max) + ', ' + getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max),
+      price: getRandomValue(DATA_BASE.price.min, DATA_BASE.price.max),
+      type: DATA_BASE.type[getRandomValue(0, DATA_BASE.type.length - 1)],
+      rooms: getRandomValue(DATA_BASE.rooms.min, DATA_BASE.rooms.max),
+      guests: getRandomValue(DATA_BASE.guests.min, DATA_BASE.guests.max),
+      checkin: DATA_BASE.checkin[getRandomValue(0, DATA_BASE.checkin.length - 1)],
+      checkout: DATA_BASE.checkout[getRandomValue(0, DATA_BASE.checkout.length - 1)],
+      features: getRandomArray(DATA_BASE.features).join(', '),
+      description: '',
+      photos: getRandomArray(DATA_BASE.photos).join(', '),
+    },
+    location: {
+      x: getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max),
+      y: getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max),
+    },
+  };
+  return advert;
 };
 
-var getAvatarLink = function (number) {
-  return 'img/avatars/user' + number + '.png';
+var getAdvertList = function () {
+  var advertList = [];
+  for (var i = 0; i < DATA_BASE.amountAdvents; i++) {
+    advertList.push(getAdvert());
+  }
+
+  return advertList;
 };
 
-getAvatarArray(8);
+var advertList = getAdvertList();
 
-console.log(getAvatarLink(getAvatarItem(avatarArray)));
+var removeClass = function (nameClass) {
+  return document.querySelector('.map').classList.remove(nameClass);
+};
+
+var renderAdvert = function (obj) {
+  var advertElement = document.querySelector('#pin').content.querySelector('.map__pin').cloneNode(true);
+  var avatarImage = advertElement.querySelector('img');
+  advertElement.style.left = (obj.location.x + 25) + 'px';
+  advertElement.style.top = (obj.location.y + 70) + 'px';
+  avatarImage.src = obj.author.avatar;
+  avatarImage.alt = obj.offer.title;
+
+  return advertElement;
+};
+
+var renderAdvertListOnMap = function () {
+  var fragment = document.createDocumentFragment();
+  var mapPins = document.querySelector('.map__pins');
+  for (var i = 0; i < advertList.length; i++) {
+    fragment.appendChild(renderAdvert(advertList[i]));
+  }
+  mapPins.appendChild(fragment);
+};
+
+removeClass('map--faded');
+renderAdvertListOnMap();
