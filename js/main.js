@@ -33,6 +33,8 @@ var DATA_BASE = {
 };
 
 var mapPins = document.querySelector('.map__pins');
+var map = document.querySelector('.map');
+var mapFiltres = document.querySelector('.map__filters-container');
 
 var getRandomValue = function (min, max) {
   min = Math.ceil(min);
@@ -116,10 +118,79 @@ var renderAdvert = function (obj) {
 var renderAdvertListOnMap = function (elementList, blockForAdd) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < elementList.length; i++) {
-    fragment.appendChild(renderAdvert(advertList[i]));
+    fragment.appendChild(renderAdvert(elementList[i]));
   }
   blockForAdd.appendChild(fragment);
 };
 
 removeClass('.map', 'map--faded');
 renderAdvertListOnMap(advertList, mapPins);
+
+var getTypeHousing = function (typeHouse) {
+  switch (typeHouse) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalo':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    case 'palace':
+      return 'Дворец';
+  }
+};
+
+var getFeaturesPopup = function (block, array) {
+  var fragment = document.createDocumentFragment();
+  block.innerHTML = '';
+  for ( var i = 0; i < array.length; i++ ) {
+    var featuresElement = document.createElement('li');
+    featuresElement.className = 'popup__feature popup__feature--' + array[i];
+    fragment.appendChild(featuresElement);
+  };
+  block.appendChild(fragment);
+};
+
+var getPhotoPopup = function (block, array) {
+  var fragment = document.createDocumentFragment();
+  block.innerHTML = '';
+  for ( var i = 0; i < array.length; i++) {
+    var photoElement = document.createElement('img');
+    photoElement.src = array[i];
+    photoElement.setAttribute('width', '45');
+    photoElement.setAttribute('height', '40');
+    photoElement.setAttribute('alt', 'Фотография жилья');
+    fragment.appendChild(photoElement);
+  }
+  block.appendChild(fragment);
+};
+
+var getPopup = function (obj) {
+  var popupElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
+  var popupTitle = popupElement.querySelector('.popup__title');
+  var popupAdress = popupElement.querySelector('.popup__text--address');
+  var popupPrice = popupElement.querySelector('.popup__text--price');
+  var popupType = popupElement.querySelector('.popup__type');
+  var popupCapacity = popupElement.querySelector('.popup__text--capacity');
+  var popupCheck = popupElement.querySelector('.popup__text--time');
+  var popupFeatures = popupElement.querySelector('.popup__features');
+  var popupDescription = popupElement.querySelector('.popup__description');
+  var popupPhotos = popupElement.querySelector('.popup__photos');
+  var popupAvatar = popupElement.querySelector('.popup__avatar');
+  popupTitle.textContent = obj.offer.title;
+  popupAdress.textContent = obj.offer.adress;
+  popupPrice.textContent = obj.offer.price + '₽/ночь';
+  popupType.textContent = getTypeHousing(obj.offer.type);
+  popupCapacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+  popupCheck.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+  getFeaturesPopup(popupFeatures, obj.offer.features);
+  popupDescription.classList.add('hidden');
+  getPhotoPopup(popupPhotos, obj.offer.photos);
+  popupAvatar.src = obj.author.avatar;
+  map.insertBefore(popupElement, mapFiltres);
+
+  return popupElement;
+};
+
+getPopup(advertList[0]);
+
+
