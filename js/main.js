@@ -32,6 +32,8 @@ var DATA_BASE = {
   }
 };
 
+var mapPins = document.querySelector('.map__pins');
+
 var getRandomValue = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -56,29 +58,31 @@ var renderArrayAvatarsLink = function () {
 var avatarsLinkArray = renderArrayAvatarsLink();
 
 var getAdvert = function () {
-  var advert = {
+  var xAdress = getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max);
+  var yAdress = getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max);
+
+  return {
     author: {
       avatar: avatarsLinkArray.splice(getRandomValue(0, avatarsLinkArray.length - 1), 1).join(),
     },
     offer: {
       title: DATA_BASE.title[getRandomValue(0, DATA_BASE.title.length - 1)],
-      adress: getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max) + ', ' + getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max),
+      adress: xAdress + ', ' + yAdress,
       price: getRandomValue(DATA_BASE.price.min, DATA_BASE.price.max),
       type: DATA_BASE.type[getRandomValue(0, DATA_BASE.type.length - 1)],
       rooms: getRandomValue(DATA_BASE.rooms.min, DATA_BASE.rooms.max),
       guests: getRandomValue(DATA_BASE.guests.min, DATA_BASE.guests.max),
       checkin: DATA_BASE.checkin[getRandomValue(0, DATA_BASE.checkin.length - 1)],
       checkout: DATA_BASE.checkout[getRandomValue(0, DATA_BASE.checkout.length - 1)],
-      features: getRandomArray(DATA_BASE.features).join(', '),
+      features: getRandomArray(DATA_BASE.features),
       description: '',
-      photos: getRandomArray(DATA_BASE.photos).join(', '),
+      photos: getRandomArray(DATA_BASE.photos),
     },
     location: {
-      x: getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max),
-      y: getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max),
+      x: xAdress,
+      y: yAdress,
     },
   };
-  return advert;
 };
 
 var getAdvertList = function () {
@@ -92,29 +96,30 @@ var getAdvertList = function () {
 
 var advertList = getAdvertList();
 
-var removeClass = function (nameClass) {
-  return document.querySelector('.map').classList.remove(nameClass);
+var removeClass = function (block, nameClassForRemove) {
+  return document.querySelector(block).classList.remove(nameClassForRemove);
 };
 
 var renderAdvert = function (obj) {
   var advertElement = document.querySelector('#pin').content.querySelector('.map__pin').cloneNode(true);
   var avatarImage = advertElement.querySelector('img');
-  advertElement.style.left = (obj.location.x + 25) + 'px';
-  advertElement.style.top = (obj.location.y + 70) + 'px';
+  var widthPin = 50 / 2;
+  var heightPin = 70 / 2;
+  advertElement.style.left = (obj.location.x - widthPin) + 'px';
+  advertElement.style.top = (obj.location.y - heightPin) + 'px';
   avatarImage.src = obj.author.avatar;
   avatarImage.alt = obj.offer.title;
 
   return advertElement;
 };
 
-var renderAdvertListOnMap = function () {
+var renderAdvertListOnMap = function (elementList, blockForAdd) {
   var fragment = document.createDocumentFragment();
-  var mapPins = document.querySelector('.map__pins');
-  for (var i = 0; i < advertList.length; i++) {
+  for (var i = 0; i < elementList.length; i++) {
     fragment.appendChild(renderAdvert(advertList[i]));
   }
-  mapPins.appendChild(fragment);
+  blockForAdd.appendChild(fragment);
 };
 
-removeClass('map--faded');
-renderAdvertListOnMap();
+removeClass('.map', 'map--faded');
+renderAdvertListOnMap(advertList, mapPins);
