@@ -154,11 +154,8 @@ var getPhotoPopup = function (block, array) {
   var fragment = document.createDocumentFragment();
   block.innerHTML = '';
   for ( var i = 0; i < array.length; i++) {
-    var photoElement = document.createElement('img');
+    var photoElement = document.querySelector('#card').content.querySelector('.popup__photo').cloneNode();
     photoElement.src = array[i];
-    photoElement.setAttribute('width', '45');
-    photoElement.setAttribute('height', '40');
-    photoElement.setAttribute('alt', 'Фотография жилья');
     fragment.appendChild(photoElement);
   }
   block.appendChild(fragment);
