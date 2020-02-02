@@ -139,23 +139,24 @@ var getTypeHousing = function (typeHouse) {
     case 'palace':
       return 'Дворец';
   }
+  return typeHouse;
 };
 
 var getFeaturesPopup = function (block, array) {
   var fragment = document.createDocumentFragment();
   block.innerHTML = '';
-  for ( var i = 0; i < array.length; i++ ) {
+  for (var i = 0; i < array.length; i++) {
     var featuresElement = document.createElement('li');
     featuresElement.className = 'popup__feature popup__feature--' + array[i];
     fragment.appendChild(featuresElement);
-  };
+  }
   block.appendChild(fragment);
 };
 
 var getPhotoPopup = function (block, array) {
   var fragment = document.createDocumentFragment();
   block.innerHTML = '';
-  for ( var i = 0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) {
     var photoElement = document.querySelector('#card').content.querySelector('.popup__photo').cloneNode();
     photoElement.src = array[i];
     fragment.appendChild(photoElement);
