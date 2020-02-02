@@ -186,7 +186,6 @@ var getPopup = function (obj) {
   popupDescription.classList.add('hidden');
   getPhotoPopup(popupPhotos, obj.offer.photos);
   popupAvatar.src = obj.author.avatar;
-  map.insertBefore(popupElement, mapFiltres);
 
   return popupElement;
 };
