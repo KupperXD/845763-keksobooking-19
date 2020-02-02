@@ -35,6 +35,8 @@ var DATA_BASE = {
 var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var mapFiltres = document.querySelector('.map__filters-container');
+var templateCard = document.querySelector('#card').content.querySelector('.map__card');
+var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var getRandomValue = function (min, max) {
   min = Math.ceil(min);
@@ -99,11 +101,11 @@ var getAdvertList = function () {
 var advertList = getAdvertList();
 
 var removeClass = function (block, nameClassForRemove) {
-  return document.querySelector(block).classList.remove(nameClassForRemove);
+  document.querySelector(block).classList.remove(nameClassForRemove);
 };
 
 var renderAdvert = function (obj) {
-  var advertElement = document.querySelector('#pin').content.querySelector('.map__pin').cloneNode(true);
+  var advertElement = templatePin.cloneNode(true);
   var avatarImage = advertElement.querySelector('img');
   var widthPin = 50 / 2;
   var heightPin = 70 / 2;
@@ -162,7 +164,7 @@ var getPhotoPopup = function (block, array) {
 };
 
 var getPopup = function (obj) {
-  var popupElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
+  var popupElement = templateCard.cloneNode(true);
   var popupTitle = popupElement.querySelector('.popup__title');
   var popupAdress = popupElement.querySelector('.popup__text--address');
   var popupPrice = popupElement.querySelector('.popup__text--price');
@@ -188,6 +190,8 @@ var getPopup = function (obj) {
   return popupElement;
 };
 
-getPopup(advertList[0]);
+var insertElement = function (element, block) {
+  map.insertBefore(element, block);
+};
 
-
+insertElement(getPopup(advertList[0]), mapFiltres);
