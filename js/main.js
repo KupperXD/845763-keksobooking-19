@@ -32,11 +32,79 @@ var DATA_BASE = {
   }
 };
 
+
+
+var ENTER_KEY = 'Enter';
+var HEIGHT_IN_ACTIVE_PIN = 200;
+var WIDTH_IN_ACTIVE_PIN = 200;
+var HEIGHT_MAIN_PIN = 84;
+var WIDTH_MAIN_PIN = 72;
+var heightHalfInActivePin = HEIGHT_IN_ACTIVE_PIN / 2;
+var widthHalfInActivePin = WIDTH_IN_ACTIVE_PIN / 2;
+var widthHalfMainPin = WIDTH_MAIN_PIN / 2;
+
 var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var mapFiltres = document.querySelector('.map__filters-container');
 var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
+var fieldSetsOnForm = document.querySelectorAll('fieldset');
+var filterMap = document.querySelectorAll('.map__filter');
+var mainMapPin = document.querySelector('.map__pin--main');
+var adressInput = document.querySelector('#address');
+var selectRoom = document.querySelector('#room_number');
+var selectGuests = document.querySelector('#capacity');
+
+var pinDownHandler = function () {
+    removeClass('.map', 'map--faded');
+    removeClass('.ad-form', 'ad-form--disabled');
+    deletDisabledForm(fieldSetsOnForm);
+    deletDisabledForm(filterMap);
+    writeInputAdress(getCoordinate(widthHalfMainPin, HEIGHT_MAIN_PIN));
+};
+
+var getDisabledForm = function (form) {
+  for (var i = 0; i < form.length; i++) {
+    form[i].setAttribute('Disabled', 'Disabled');
+  }
+};
+
+var deletDisabledForm = function (form) {
+  for (var i = 0; i < form.length; i++) {
+    form[i].removeAttribute('Disabled');
+  }
+};
+
+mainMapPin.addEventListener('mousedown', function (evt) {
+  if (evt.which == 1) {
+    pinDownHandler();
+  }
+});
+
+mainMapPin.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+   pinDownHandler();
+  }
+});
+
+var getCoordinate = function (width, height) {
+  var coordinateX = parseInt(mainMapPin.style.left, 10);
+  var coordinateY = parseInt(mainMapPin.style.top, 10);
+  coordinateX += width;
+  coordinateY += height;
+  return coordinateX + ', ' + coordinateY;
+};
+
+
+var writeInputAdress = function (adress) {
+  adressInput.value = adress;
+};
+
+getDisabledForm(fieldSetsOnForm);
+getDisabledForm(filterMap);
+writeInputAdress(getCoordinate(widthHalfInActivePin, heightHalfInActivePin));
+
+
 
 var getRandomValue = function (min, max) {
   min = Math.ceil(min);
@@ -125,8 +193,8 @@ var renderAdvertListOnMap = function (elementList, blockForAdd) {
   blockForAdd.appendChild(fragment);
 };
 
-removeClass('.map', 'map--faded');
-renderAdvertListOnMap(advertList, mapPins);
+// removeClass('.map', 'map--faded');
+// renderAdvertListOnMap(advertList, mapPins);
 
 var getTypeHousing = function (typeHouse) {
   switch (typeHouse) {
@@ -142,7 +210,7 @@ var getTypeHousing = function (typeHouse) {
   return typeHouse;
 };
 
-var getFeaturesPopup = function (block, array) {
+/*var getFeaturesPopup = function (block, array) {
   var fragment = document.createDocumentFragment();
   block.innerHTML = '';
   for (var i = 0; i < array.length; i++) {
@@ -194,4 +262,23 @@ var insertElement = function (element, block) {
   map.insertBefore(element, block);
 };
 
-insertElement(getPopup(advertList[0]), mapFiltres);
+insertElement(getPopup(advertList[0]), mapFiltres);*/
+
+var roomsChangeHandler = function () {
+  switch (selectRoom.selectedIndex) {
+    case 0:
+      selectGuests.selectedIndex = 2;
+      break;
+    case 1:
+      selectGuests.selectedIndex = 1;
+      break;
+    case 2:
+      selectGuests.selectedIndex = 0;
+      break;
+    case 3:
+      selectGuests.selectedIndex = 3;
+      break;
+  };
+};
+
+selectRoom.addEventListener('change', roomsChangeHandler);
