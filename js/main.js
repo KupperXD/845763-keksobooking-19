@@ -32,8 +32,6 @@ var DATA_BASE = {
   }
 };
 
-
-
 var ENTER_KEY = 'Enter';
 var HEIGHT_IN_ACTIVE_PIN = 200;
 var WIDTH_IN_ACTIVE_PIN = 200;
@@ -265,20 +263,16 @@ var insertElement = function (element, block) {
 insertElement(getPopup(advertList[0]), mapFiltres);*/
 
 var roomsChangeHandler = function () {
-  switch (selectRoom.selectedIndex) {
-    case 0:
-      selectGuests.selectedIndex = 2;
-      break;
-    case 1:
-      selectGuests.selectedIndex = 1;
-      break;
-    case 2:
-      selectGuests.selectedIndex = 0;
-      break;
-    case 3:
-      selectGuests.selectedIndex = 3;
-      break;
-  };
+  var roomsNumber = selectRoom.value;
+  var guestsNumber = selectGuests.value;
+  if (roomsNumber == 100) {
+    selectGuests.selectedIndex = 3;
+    selectRoom.setCustomValidity('');
+  } else if (roomsNumber < guestsNumber) {
+      selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
+  } else {
+      selectRoom.setCustomValidity('');
+  }
 };
 
-selectRoom.addEventListener('change', roomsChangeHandler);
+selectRoom.addEventListener('input', roomsChangeHandler);
