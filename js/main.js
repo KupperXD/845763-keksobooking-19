@@ -33,12 +33,11 @@ var DATA_BASE = {
 };
 
 var ENTER_KEY = 'Enter';
-var HEIGHT_IN_ACTIVE_PIN = 200;
-var WIDTH_IN_ACTIVE_PIN = 200;
-var HEIGHT_MAIN_PIN = 84;
-var WIDTH_MAIN_PIN = 72;
-var heightHalfInActivePin = HEIGHT_IN_ACTIVE_PIN / 2;
-var widthHalfInActivePin = WIDTH_IN_ACTIVE_PIN / 2;
+var LEFT_MOUSE_CLICK = 0;
+var HEIGHT_MAIN_PIN = 65;
+var WIDTH_MAIN_PIN = 65;
+var HALF_SIZE_PIN = 32;
+var INDENTATION_PIN = 54;
 var widthHalfMainPin = WIDTH_MAIN_PIN / 2;
 
 var mapPins = document.querySelector('.map__pins');
@@ -53,60 +52,10 @@ var adressInput = document.querySelector('#address');
 var selectRoom = document.querySelector('#room_number');
 var selectGuests = document.querySelector('#capacity');
 
-var pinDownHandler = function () {
-    removeClass('.map', 'map--faded');
-    removeClass('.ad-form', 'ad-form--disabled');
-    deletDisabledForm(fieldSetsOnForm);
-    deletDisabledForm(filterMap);
-    writeInputAdress(getCoordinate(widthHalfMainPin, HEIGHT_MAIN_PIN));
-};
-
-var getDisabledForm = function (form) {
-  for (var i = 0; i < form.length; i++) {
-    form[i].setAttribute('Disabled', 'Disabled');
-  }
-};
-
-var deletDisabledForm = function (form) {
-  for (var i = 0; i < form.length; i++) {
-    form[i].removeAttribute('Disabled');
-  }
-};
-
-mainMapPin.addEventListener('mousedown', function (evt) {
-  if (evt.which == 1) {
-    pinDownHandler();
-  }
-});
-
-mainMapPin.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
-   pinDownHandler();
-  }
-});
-
-var getCoordinate = function (width, height) {
-  var coordinateX = parseInt(mainMapPin.style.left, 10);
-  var coordinateY = parseInt(mainMapPin.style.top, 10);
-  coordinateX += width;
-  coordinateY += height;
-  return coordinateX + ', ' + coordinateY;
-};
-
-
-var writeInputAdress = function (adress) {
-  adressInput.value = adress;
-};
-
-getDisabledForm(fieldSetsOnForm);
-getDisabledForm(filterMap);
-writeInputAdress(getCoordinate(widthHalfInActivePin, heightHalfInActivePin));
-
-
-
 var getRandomValue = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
+
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
@@ -191,8 +140,6 @@ var renderAdvertListOnMap = function (elementList, blockForAdd) {
   blockForAdd.appendChild(fragment);
 };
 
-// removeClass('.map', 'map--faded');
-// renderAdvertListOnMap(advertList, mapPins);
 
 var getTypeHousing = function (typeHouse) {
   switch (typeHouse) {
@@ -262,12 +209,75 @@ var insertElement = function (element, block) {
 
 insertElement(getPopup(advertList[0]), mapFiltres);*/
 
+
+/* module4-task2 Повыесил обработчик событий и частичную валидацию на форму */
+
+var getDisabledForm = function (fieldset) {
+  for (var i = 0; i < form.length; i++) {
+    fieldset[i].disabled = true;
+  }
+};
+
+var deletDisabledForm = function (fieldset) {
+  for (var i = 0; i < form.length; i++) {
+    fieldset[i].disabled = false;
+  }
+};
+
+var getCoordinate = function () {
+  var x = parseInt(mainMapPin.style.left, 10);
+  var y = parseInt(mainMapPin.style.top, 10);
+
+  return {
+    x: x,
+    y: y
+  }
+};
+
+
+var writeInputAdress = function (indentation) {
+  var coordinate = getCoordinate();
+  var coordinateX = coordinate.x + HALF_SIZE_PIN;
+  var coordinateY = coordinate.y + HALF_SIZE_PIN + indentation;
+  adressInput.value = coordinateX + ', ' + coordinateY;
+};
+
+var activPage = function () {
+  removeClass('.map', 'map--faded');
+  removeClass('.ad-form', 'ad-form--disabled');
+  deletDisabledForm(fieldSetsOnForm);
+  deletDisabledForm(filterMap);
+  renderAdvertListOnMap(advertList, mapPins);
+  writeInputAdress(INDENTATION_PIN);
+
+};
+
+var pinMouseDownHandler = function (evt) {
+  if (evt.button === LEFT_MOUSE_CLICK) {
+    activPage();
+  }
+  mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
+}
+
+var pinKeyDownHandler = function (evt) {
+  if (evt.key === ENTER_KEY) {
+   activPage();
+  }
+  mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
+}
+
+mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
+mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+
+getDisabledForm(fieldSetsOnForm);
+getDisabledForm(filterMap);
+writeInputAdress(0);
+
 var roomsChangeHandler = function () {
-  var roomsNumber = selectRoom.value;
-  var guestsNumber = selectGuests.value;
-  if (roomsNumber == 100) {
-    selectGuests.selectedIndex = 3;
-    selectRoom.setCustomValidity('');
+  var roomsNumber = Number(selectRoom.value);
+  var guestsNumber = Number(selectGuests.value);
+  if (roomsNumber === 100 && guestsNumber != 0) {
+    selectRoom.setCustomValidity('100 комнат не для гостей!');
   } else if (roomsNumber < guestsNumber) {
       selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
   } else {
@@ -275,4 +285,5 @@ var roomsChangeHandler = function () {
   }
 };
 
-selectRoom.addEventListener('input', roomsChangeHandler);
+selectRoom.addEventListener('change', roomsChangeHandler);
+selectGuests.addEventListener('change', roomsChangeHandler);
