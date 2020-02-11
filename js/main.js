@@ -31,19 +31,16 @@ var DATA_BASE = {
     }
   }
 };
-
+// var map = document.querySelector('.map');
+// var mapFiltres = document.querySelector('.map__filters-container');
+// var templateCard = document.querySelector('#card').content.querySelector('.map__card');
+// var HEIGHT_MAIN_PIN = 65;
+// var WIDTH_MAIN_PIN = 65;
 var ENTER_KEY = 'Enter';
 var LEFT_MOUSE_CLICK = 0;
-var HEIGHT_MAIN_PIN = 65;
-var WIDTH_MAIN_PIN = 65;
 var HALF_SIZE_PIN = 32;
 var INDENTATION_PIN = 54;
-var widthHalfMainPin = WIDTH_MAIN_PIN / 2;
-
 var mapPins = document.querySelector('.map__pins');
-var map = document.querySelector('.map');
-var mapFiltres = document.querySelector('.map__filters-container');
-var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
 var fieldSetsOnForm = document.querySelectorAll('fieldset');
 var filterMap = document.querySelectorAll('.map__filter');
@@ -141,7 +138,7 @@ var renderAdvertListOnMap = function (elementList, blockForAdd) {
 };
 
 
-var getTypeHousing = function (typeHouse) {
+/* var getTypeHousing = function (typeHouse) {
   switch (typeHouse) {
     case 'flat':
       return 'Квартира';
@@ -153,9 +150,9 @@ var getTypeHousing = function (typeHouse) {
       return 'Дворец';
   }
   return typeHouse;
-};
+}; */
 
-/*var getFeaturesPopup = function (block, array) {
+/* var getFeaturesPopup = function (block, array) {
   var fragment = document.createDocumentFragment();
   block.innerHTML = '';
   for (var i = 0; i < array.length; i++) {
@@ -207,19 +204,19 @@ var insertElement = function (element, block) {
   map.insertBefore(element, block);
 };
 
-insertElement(getPopup(advertList[0]), mapFiltres);*/
+insertElement(getPopup(advertList[0]), mapFiltres); */
 
 
 /* module4-task2 Повыесил обработчик событий и частичную валидацию на форму */
 
 var getDisabledForm = function (fieldset) {
-  for (var i = 0; i < form.length; i++) {
+  for (var i = 0; i < fieldset.length; i++) {
     fieldset[i].disabled = true;
   }
 };
 
 var deletDisabledForm = function (fieldset) {
-  for (var i = 0; i < form.length; i++) {
+  for (var i = 0; i < fieldset.length; i++) {
     fieldset[i].disabled = false;
   }
 };
@@ -231,14 +228,14 @@ var getCoordinate = function () {
   return {
     x: x,
     y: y
-  }
+  };
 };
-
 
 var writeInputAdress = function (indentation) {
   var coordinate = getCoordinate();
   var coordinateX = coordinate.x + HALF_SIZE_PIN;
   var coordinateY = coordinate.y + HALF_SIZE_PIN + indentation;
+
   adressInput.value = coordinateX + ', ' + coordinateY;
 };
 
@@ -249,22 +246,21 @@ var activPage = function () {
   deletDisabledForm(filterMap);
   renderAdvertListOnMap(advertList, mapPins);
   writeInputAdress(INDENTATION_PIN);
-
+  mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
+  mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
 };
 
 var pinMouseDownHandler = function (evt) {
   if (evt.button === LEFT_MOUSE_CLICK) {
     activPage();
   }
-  mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
-}
+};
 
 var pinKeyDownHandler = function (evt) {
   if (evt.key === ENTER_KEY) {
-   activPage();
+    activPage();
   }
-  mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
-}
+};
 
 mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
 mainMapPin.addEventListener('keydown', pinKeyDownHandler);
@@ -273,17 +269,18 @@ getDisabledForm(fieldSetsOnForm);
 getDisabledForm(filterMap);
 writeInputAdress(0);
 
-var roomsChangeHandler = function () {
+var getValidQuantityRooms = function () {
   var roomsNumber = Number(selectRoom.value);
   var guestsNumber = Number(selectGuests.value);
-  if (roomsNumber === 100 && guestsNumber != 0) {
+
+  if (roomsNumber === 100 && guestsNumber !== 0) {
     selectRoom.setCustomValidity('100 комнат не для гостей!');
   } else if (roomsNumber < guestsNumber) {
-      selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
+    selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
   } else {
-      selectRoom.setCustomValidity('');
+    selectRoom.setCustomValidity('');
   }
 };
 
-selectRoom.addEventListener('change', roomsChangeHandler);
-selectGuests.addEventListener('change', roomsChangeHandler);
+selectRoom.addEventListener('change', getValidQuantityRooms);
+selectGuests.addEventListener('change', getValidQuantityRooms);
