@@ -45,25 +45,25 @@
   var avatarsLinkArray = renderArrayAvatarsLink();
 
   var getAdvert = function () {
-    var xAdress = window.utilits.getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max);
-    var yAdress = window.utilits.getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max);
+    var xAdress = window.utils.getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max);
+    var yAdress = window.utils.getRandomValue(DATA_BASE.location.y.min, DATA_BASE.location.y.max);
 
     return {
       author: {
-        avatar: avatarsLinkArray.splice(window.utilits.getRandomValue(0, avatarsLinkArray.length - 1), 1).join(),
+        avatar: avatarsLinkArray.splice(window.utils.getRandomValue(0, avatarsLinkArray.length - 1), 1).join(),
       },
       offer: {
-        title: DATA_BASE.title[window.utilits.getRandomValue(0, DATA_BASE.title.length - 1)],
+        title: DATA_BASE.title[window.utils.getRandomValue(0, DATA_BASE.title.length - 1)],
         adress: xAdress + ', ' + yAdress,
-        price: window.utilits.getRandomValue(DATA_BASE.price.min, DATA_BASE.price.max),
-        type: DATA_BASE.type[window.utilits.getRandomValue(0, DATA_BASE.type.length - 1)],
-        rooms: window.utilits.getRandomValue(DATA_BASE.rooms.min, DATA_BASE.rooms.max),
-        guests: window.utilits.getRandomValue(DATA_BASE.guests.min, DATA_BASE.guests.max),
-        checkin: DATA_BASE.checkin[window.utilits.getRandomValue(0, DATA_BASE.checkin.length - 1)],
-        checkout: DATA_BASE.checkout[window.utilits.getRandomValue(0, DATA_BASE.checkout.length - 1)],
-        features: window.utilits.getRandomArray(DATA_BASE.features),
+        price: window.utils.getRandomValue(DATA_BASE.price.min, DATA_BASE.price.max),
+        type: DATA_BASE.type[window.utils.getRandomValue(0, DATA_BASE.type.length - 1)],
+        rooms: window.utils.getRandomValue(DATA_BASE.rooms.min, DATA_BASE.rooms.max),
+        guests: window.utils.getRandomValue(DATA_BASE.guests.min, DATA_BASE.guests.max),
+        checkin: DATA_BASE.checkin[window.utils.getRandomValue(0, DATA_BASE.checkin.length - 1)],
+        checkout: DATA_BASE.checkout[window.utils.getRandomValue(0, DATA_BASE.checkout.length - 1)],
+        features: window.utils.getRandomArray(DATA_BASE.features),
         description: '',
-        photos: window.utilits.getRandomArray(DATA_BASE.photos),
+        photos: window.utils.getRandomArray(DATA_BASE.photos),
       },
       location: {
         x: xAdress,
@@ -72,8 +72,19 @@
     };
   };
 
+  var getAdvertList = function () {
+    var advertList = [];
+
+    for (var i = 0; i < DATA_BASE.amountAdvents; i++) {
+      advertList.push(getAdvert());
+    }
+
+    return advertList;
+  };
+
+  var advertList = getAdvertList();
+
   window.data = {
-    getAdvert: getAdvert,
-    DATA_BASE: DATA_BASE
+    advertList: advertList
   };
 })();

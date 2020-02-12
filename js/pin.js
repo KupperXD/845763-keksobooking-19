@@ -3,18 +3,6 @@
 (function () {
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  var getAdvertList = function () {
-    var advertList = [];
-
-    for (var i = 0; i < window.data.DATA_BASE.amountAdvents; i++) {
-      advertList.push(window.data.getAdvert());
-    }
-
-    return advertList;
-  };
-
-  var advertList = getAdvertList();
-
   var renderAdvert = function (obj) {
     var advertElement = templatePin.cloneNode(true);
     var avatarImage = advertElement.querySelector('img');
@@ -29,8 +17,16 @@
     return advertElement;
   };
 
+  var renderAdvertListOnMap = function (elementList, blockForAdd) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < elementList.length; i++) {
+      fragment.appendChild(renderAdvert(elementList[i]));
+    }
+    blockForAdd.appendChild(fragment);
+  };
+
   window.pin = {
-    advertList: advertList,
-    renderAdvert: renderAdvert
+    renderAdvertListOnMap: renderAdvertListOnMap
   };
 })();

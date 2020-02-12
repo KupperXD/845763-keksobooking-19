@@ -18,7 +18,7 @@
     document.querySelector(block).classList.remove(nameClassForRemove);
   };
 
-  window.utilits = {
+  window.utils = {
     getRandomValue: getRandomValue,
     getRandomArray: getRandomArray,
     removeClass: removeClass
