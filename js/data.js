@@ -33,7 +33,7 @@
     }
   };
 
-  var renderArrayAvatarsLink = function () {
+  var renderAvatars = function () {
     var array = [];
     for (var i = 1; i <= DATA_BASE.amountAdvents; i++) {
       array.push('img/avatars/user0' + i + '.png');
@@ -42,7 +42,7 @@
     return array;
   };
 
-  var avatarsLinkArray = renderArrayAvatarsLink();
+  var avatarsArray = renderAvatars();
 
   var getAdvert = function () {
     var xAdress = window.utils.getRandomValue(DATA_BASE.location.x.min, DATA_BASE.location.x.max);
@@ -50,7 +50,7 @@
 
     return {
       author: {
-        avatar: avatarsLinkArray.splice(window.utils.getRandomValue(0, avatarsLinkArray.length - 1), 1).join(),
+        avatar: avatarsArray.splice(window.utils.getRandomValue(0, avatarsArray.length - 1), 1).join(),
       },
       offer: {
         title: DATA_BASE.title[window.utils.getRandomValue(0, DATA_BASE.title.length - 1)],
@@ -84,7 +84,5 @@
 
   var advertList = getAdvertList();
 
-  window.data = {
-    advertList: advertList
-  };
+  window.data = advertList;
 })();

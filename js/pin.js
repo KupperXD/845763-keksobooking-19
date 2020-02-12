@@ -17,16 +17,16 @@
     return advertElement;
   };
 
-  var renderAdvertListOnMap = function (elementList, blockForAdd) {
+  var renderPin = function (data, block) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < elementList.length; i++) {
-      fragment.appendChild(renderAdvert(elementList[i]));
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(renderAdvert(data[i]));
     }
-    blockForAdd.appendChild(fragment);
+    block.appendChild(fragment);
   };
 
   window.pin = {
-    renderAdvertListOnMap: renderAdvertListOnMap
+    renderPin: renderPin
   };
 })();

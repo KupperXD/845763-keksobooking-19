@@ -8,7 +8,7 @@
 
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = document.querySelector('.map__pin--main');
-  var fieldSetsOnForm = document.querySelectorAll('fieldset');
+  var fieldSetsForm = document.querySelectorAll('fieldset');
   var filterMap = document.querySelectorAll('.map__filter');
   var adressInput = document.querySelector('#address');
 
@@ -43,16 +43,16 @@
     adressInput.value = coordinateX + ', ' + coordinateY;
   };
 
-  getDisabledForm(fieldSetsOnForm);
+  getDisabledForm(fieldSetsForm);
   getDisabledForm(filterMap);
   writeInputAdress(0);
 
   var activPage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
-    deletDisabledForm(fieldSetsOnForm);
+    deletDisabledForm(fieldSetsForm);
     deletDisabledForm(filterMap);
-    window.pin.renderAdvertListOnMap(window.data.advertList, mapPins);
+    window.pin.renderPin(window.data, mapPins);
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
