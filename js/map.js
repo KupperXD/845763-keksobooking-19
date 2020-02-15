@@ -52,7 +52,7 @@
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     deletDisabledForm(fieldSetsForm);
     deletDisabledForm(filterMap);
-    window.pin.renderPins();
+    window.pin.render();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
@@ -61,7 +61,7 @@
   var disabledPage = function () {
     window.utils.addClass('.map', 'map--faded');
     window.utils.addClass('.ad-form', 'ad-form--disabled');
-    window.pin.deletPins();
+    window.pin.delet();
     getDisabledForm(fieldSetsForm);
     getDisabledForm(filterMap);
     writeInputAdress(0);

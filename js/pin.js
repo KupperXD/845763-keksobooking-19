@@ -29,11 +29,11 @@
     mapPins.appendChild(fragment);
   };
 
-  var renderPins = function () {
+  var render = function () {
     window.server.load(pinSuccessHandler);
   };
 
-  var deletPins = function () {
+  var delet = function () {
     var pins = mapPins.querySelectorAll('.map__pin');
     for (var i = 0; i < pins.length; i++) {
       if (!pins[i].classList.contains('map__pin--main')) {
@@ -43,8 +43,8 @@
   };
 
   window.pin = {
-    renderPins: renderPins,
-    deletPins: deletPins
+    render: render,
+    delet: delet
   };
 
 })();
