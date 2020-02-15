@@ -6,7 +6,7 @@
   var INDENTATION_PIN = 54;
   var HALF_SIZE_PIN = 32;
 
-  var mapPins = document.querySelector('.map__pins');
+
   var mainMapPin = document.querySelector('.map__pin--main');
   var fieldSetsForm = document.querySelectorAll('fieldset');
   var filterMap = document.querySelectorAll('.map__filter');
@@ -52,10 +52,21 @@
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     deletDisabledForm(fieldSetsForm);
     deletDisabledForm(filterMap);
-    window.upload(window.pin.pinSucessHandler);
+    window.pin.renderPins();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
+  };
+
+  var disabledPage = function () {
+    window.utils.addClass('.map', 'map--faded');
+    window.utils.addClass('.ad-form', 'ad-form--disabled');
+    window.pin.deletPins();
+    getDisabledForm(fieldSetsForm);
+    getDisabledForm(filterMap);
+    writeInputAdress(0);
+    mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
+    mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   };
 
   var pinMouseDownHandler = function (evt) {
@@ -72,4 +83,8 @@
 
   mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+
+  window.map = {
+    disabledPage: disabledPage
+  };
 })();
