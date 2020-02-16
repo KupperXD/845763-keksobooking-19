@@ -1,38 +1,50 @@
 'use strict';
 
 (function () {
-  var URL_GET = 'https://js.dump.academy/keksobooking/data';
-  var URL_POST = 'https://js.dump.academy/keksobooking';
-  var statusCode = {
-    OK: 200
+  var URL = 'https://js.dump.academy/keksobooking';
+  var StatusCode = {
+    OK: 200,
+    400: 'Неверный запрос',
+    401: 'Пользователь не авторизован',
+    403: 'Доступ запрещен',
+    404: 'Ничего не найдено',
+    500: 'Внутренняя ошибка сервера'
+  };
+
+  var createRequest = function (successHandler, errorHandler) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.timeout = 10000;
+    xhr.addEventListener('load', function () {
+      if (xhr.status === StatusCode.OK) {
+        successHandler(xhr.response);
+      } else {
+        errorHandler('Код ошибки: ' + xhr.status + ' ' + StatusCode[xhr.status]);
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      errorHandler('Ошибка сосединения! Проверь интэрнэт друг!');
+    });
+
+    xhr.addEventListener('timeout', function () {
+      errorHandler('Прошло' + xhr.timeout + 'мс. Попробуй позже');
+    });
+
+    return xhr;
   };
 
   var load = function (successHandler, errorHandler) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function () {
-      if (xhr.status === statusCode.OK) {
-        successHandler(xhr.response);
-      } else {
-        errorHandler('Ошибка из за' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-    xhr.open('GET', URL_GET);
+    var xhr = createRequest(successHandler, errorHandler);
+
+    xhr.open('GET', URL + '/data');
     xhr.send();
   };
 
   var upload = function (data, successHandler, errorHandler) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function () {
-      if (xhr.status === statusCode.OK) {
-        successHandler(xhr.response);
-      } else {
-        errorHandler();
-      }
-    });
+    var xhr = createRequest(successHandler, errorHandler);
 
-    xhr.open('POST', URL_POST);
+    xhr.open('POST', URL);
     xhr.send(data);
   };
 

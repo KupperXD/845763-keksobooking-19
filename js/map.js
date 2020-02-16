@@ -47,17 +47,6 @@
   getDisabledForm(filterMap);
   writeInputAdress(0);
 
-  var activPage = function () {
-    window.utils.removeClass('.map', 'map--faded');
-    window.utils.removeClass('.ad-form', 'ad-form--disabled');
-    deletDisabledForm(fieldSetsForm);
-    deletDisabledForm(filterMap);
-    window.pin.render();
-    writeInputAdress(INDENTATION_PIN);
-    mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
-    mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
-  };
-
   var disabledPage = function () {
     window.utils.addClass('.map', 'map--faded');
     window.utils.addClass('.ad-form', 'ad-form--disabled');
@@ -67,6 +56,24 @@
     writeInputAdress(0);
     mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+  };
+
+  var errorHandler = function (message) {
+    window.popup.addError();
+    var errorMessage = document.querySelector('.error__message');
+    errorMessage.textContent = message;
+    disabledPage();
+  };
+
+  var activPage = function () {
+    window.utils.removeClass('.map', 'map--faded');
+    window.utils.removeClass('.ad-form', 'ad-form--disabled');
+    deletDisabledForm(fieldSetsForm);
+    deletDisabledForm(filterMap);
+    window.server.load(window.pin.render, errorHandler);
+    writeInputAdress(INDENTATION_PIN);
+    mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
+    mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
   };
 
   var pinMouseDownHandler = function (evt) {

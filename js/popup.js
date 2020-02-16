@@ -7,41 +7,43 @@
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
-  var removePopup = function () {
-    var popupSuccess = document.querySelector('.success');
-    var popupError = document.querySelector('.error');
 
-    if (popupSuccess !== null) {
-      popupSuccess.remove();
-    } else if (popupError !== null) {
-      popupError.remove();
-    }
-    document.removeEventListener('keydown', escPopupHandler);
+  var remove = function (popup) {
+    return function () {
+      document.querySelector(popup).remove();
+    };
   };
 
-  var escPopupHandler = function (evt) {
+
+  var removeSuccess = remove('.success');
+  var removeError = remove('.error');
+
+  var escSuccessHandler = function (evt) {
     if (evt.key === ESC_KEY) {
-      removePopup();
+      removeSuccess();
+      document.removeEventListener('keydown', escSuccessHandler);
     }
   };
 
-  var clickPopupHandler = function () {
-    removePopup();
-    document.removeEventListener('click', clickPopupHandler);
+  var escErrorHandler = function (evt) {
+    if (evt.key === ESC_KEY) {
+      removeError();
+      document.removeEventListener('keydown', escErrorHandler);
+    }
   };
 
   var addSuccess = function () {
     var success = successTemplate.cloneNode(true);
     main.prepend(success);
-    document.addEventListener('keydown', escPopupHandler);
-    document.addEventListener('click', clickPopupHandler);
+    document.addEventListener('keydown', escSuccessHandler);
+    success.addEventListener('click', removeSuccess);
   };
 
   var addError = function () {
     var error = errorTemplate.cloneNode(true);
     main.prepend(error);
-    document.addEventListener('keydown', escPopupHandler);
-    document.addEventListener('click', clickPopupHandler);
+    document.addEventListener('keydown', escErrorHandler);
+    error.addEventListener('click', removeError);
   };
 
   window.popup = {

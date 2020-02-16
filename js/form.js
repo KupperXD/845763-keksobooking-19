@@ -39,4 +39,8 @@
     evt.preventDefault();
   });
 
+  form.addEventListener('reset', function () {
+    window.map.disabledPage();
+  });
+
 })();

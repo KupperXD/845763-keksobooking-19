@@ -20,17 +20,13 @@
     return advertElement;
   };
 
-  var pinSuccessHandler = function (data) {
+  var render = function (data) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < data.length; i++) {
       fragment.appendChild(addPin(data[i]));
     }
     mapPins.appendChild(fragment);
-  };
-
-  var render = function () {
-    window.server.load(pinSuccessHandler);
   };
 
   var delet = function () {
