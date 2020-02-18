@@ -14,13 +14,18 @@
     return arrayRandom.slice(0, getRandomValue(1, arrayRandom.length));
   };
 
-  var removeClass = function (block, nameClassForRemove) {
-    document.querySelector(block).classList.remove(nameClassForRemove);
+  var removeClass = function (block, nameClass) {
+    document.querySelector(block).classList.remove(nameClass);
+  };
+
+  var addClass = function (block, nameClass) {
+    document.querySelector(block).classList.add(nameClass);
   };
 
   window.utils = {
     getRandomValue: getRandomValue,
     getRandomArray: getRandomArray,
-    removeClass: removeClass
+    removeClass: removeClass,
+    addClass: addClass
   };
 })();

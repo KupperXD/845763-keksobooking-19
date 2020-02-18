@@ -1,32 +1,46 @@
 'use strict';
 
 (function () {
+  var HEIGHTPIN = 70;
+  var WIDTHPIN = 50;
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
+  var mapPins = document.querySelector('.map__pins');
 
-  var renderAdvert = function (obj) {
+
+  var addPin = function (obj) {
     var advertElement = templatePin.cloneNode(true);
     var avatarImage = advertElement.querySelector('img');
-    var widthPin = 50 / 2;
-    var heightPin = 70 / 2;
+    var widthIndent = WIDTHPIN / 2;
 
-    advertElement.style.left = (obj.location.x - widthPin) + 'px';
-    advertElement.style.top = (obj.location.y - heightPin) + 'px';
+    advertElement.style.left = (obj.location.x - widthIndent) + 'px';
+    advertElement.style.top = (obj.location.y - HEIGHTPIN) + 'px';
     avatarImage.src = obj.author.avatar;
     avatarImage.alt = obj.offer.title;
 
     return advertElement;
   };
 
-  var renderPin = function (data, block) {
+  var render = function (data) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < data.length; i++) {
-      fragment.appendChild(renderAdvert(data[i]));
+      fragment.appendChild(addPin(data[i]));
     }
-    block.appendChild(fragment);
+    mapPins.appendChild(fragment);
+  };
+
+  var delet = function () {
+    var pins = mapPins.querySelectorAll('.map__pin');
+    for (var i = 0; i < pins.length; i++) {
+      if (!pins[i].classList.contains('map__pin--main')) {
+        pins[i].remove();
+      }
+    }
   };
 
   window.pin = {
-    renderPin: renderPin
+    render: render,
+    delet: delet
   };
+
 })();

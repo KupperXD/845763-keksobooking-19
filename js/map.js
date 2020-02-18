@@ -6,7 +6,7 @@
   var INDENTATION_PIN = 54;
   var HALF_SIZE_PIN = 32;
 
-  var mapPins = document.querySelector('.map__pins');
+
   var mainMapPin = document.querySelector('.map__pin--main');
   var fieldSetsForm = document.querySelectorAll('fieldset');
   var filterMap = document.querySelectorAll('.map__filter');
@@ -47,12 +47,30 @@
   getDisabledForm(filterMap);
   writeInputAdress(0);
 
+  var disabledPage = function () {
+    window.utils.addClass('.map', 'map--faded');
+    window.utils.addClass('.ad-form', 'ad-form--disabled');
+    window.pin.delet();
+    getDisabledForm(fieldSetsForm);
+    getDisabledForm(filterMap);
+    writeInputAdress(0);
+    mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
+    mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+  };
+
+  var errorHandler = function (message) {
+    window.popup.addError();
+    var errorMessage = document.querySelector('.error__message');
+    errorMessage.textContent = message;
+    disabledPage();
+  };
+
   var activPage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     deletDisabledForm(fieldSetsForm);
     deletDisabledForm(filterMap);
-    window.pin.renderPin(window.data, mapPins);
+    window.server.load(window.pin.render, errorHandler);
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
@@ -72,4 +90,8 @@
 
   mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+
+  window.map = {
+    disabledPage: disabledPage
+  };
 })();
