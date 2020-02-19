@@ -3,6 +3,7 @@
 (function () {
   var HEIGHTPIN = 70;
   var WIDTHPIN = 50;
+  var ADVERT_MAX = 5;
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
 
@@ -22,10 +23,13 @@
 
   var render = function (data) {
     var fragment = document.createDocumentFragment();
+    var dataCopy = data.slice();
 
-    for (var i = 0; i < data.length; i++) {
-      fragment.appendChild(addPin(data[i]));
-    }
+    dataCopy.length = (dataCopy.length > ADVERT_MAX) ? ADVERT_MAX : dataCopy.length;
+    dataCopy.forEach(function (advert) {
+      fragment.appendChild(addPin(advert));
+    });
+
     mapPins.appendChild(fragment);
   };
 

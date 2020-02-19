@@ -1,4 +1,4 @@
-'use strict';
+/* 'use strict';
 
 (function () {
   var DATA_BASE = {
@@ -85,4 +85,4 @@
   var advertList = getAdvertList();
 
   window.data = advertList;
-})();
+})(); */
