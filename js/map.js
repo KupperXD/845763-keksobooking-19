@@ -59,24 +59,12 @@
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   };
 
-  var errorHandler = function (message) {
-    window.popup.addError();
-    var errorMessage = document.querySelector('.error__message');
-    errorMessage.textContent = message;
-    disabledPage();
-  };
-
-  var successHandler = function (data) {
-    var advertList = window.filter.filterType(data);
-    window.pin.render(advertList);
-  };
-
   var activPage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     deletDisabledForm(fieldSetsForm);
     deletDisabledForm(filterMap);
-    window.server.load(successHandler, errorHandler);
+    window.data.defaultAdvert();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
@@ -94,14 +82,10 @@
     }
   };
 
-  var filterChangeHandler = function () {
-    window.pin.delet();
-    window.server.load(successHandler, errorHandler);
-  };
 
   mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
-  filterForm.addEventListener('change', filterChangeHandler);
+  filterForm.addEventListener('change', window.data.updateAdverts);
 
   window.map = {
     disabledPage: disabledPage

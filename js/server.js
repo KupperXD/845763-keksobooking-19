@@ -10,14 +10,14 @@
     500: 'Внутренняя ошибка сервера'
   };
 
-  var OK = 200;
+  var OK_STATUS = 200;
 
   var createRequest = function (successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = 10000;
     xhr.addEventListener('load', function () {
-      if (xhr.status === OK) {
+      if (xhr.status === OK_STATUS) {
         successHandler(xhr.response);
       } else {
         errorHandler('Код ошибки: ' + xhr.status + ' ' + errorCodeMap[xhr.status]);
@@ -25,7 +25,7 @@
     });
 
     xhr.addEventListener('error', function () {
-      errorHandler('Ошибка соединения! Проверь интэрнэт друг!');
+      errorHandler('Ошибка соединения! Проверь интернет друг!');
     });
 
     xhr.addEventListener('timeout', function () {
