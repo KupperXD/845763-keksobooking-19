@@ -9,10 +9,7 @@
   };
 
   var errorHandler = function (message) {
-    window.popup.addError();
-    var errorMessage = document.querySelector('.error__message');
-    errorMessage.textContent = message;
-    window.map.disabledPage();
+    window.popup.addError(message);
   };
 
   var defaultAdvert = function () {

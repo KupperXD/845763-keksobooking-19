@@ -12,15 +12,15 @@
   var filterForm = document.querySelector('.map__filters');
 
   var getDisabledForm = function (fieldset) {
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = true;
-    }
+    fieldset.forEach(function (item) {
+      item.disabled = true;
+    });
   };
 
   var deleteDisabledForm = function (fieldset) {
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = false;
-    }
+    fieldset.forEach(function (item) {
+      item.disabled = false;
+    });
   };
 
   var getCoordinate = function () {
