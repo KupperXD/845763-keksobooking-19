@@ -1,16 +1,15 @@
 'use strict';
 
 (function () {
+  var OK_STATUS = 200;
   var URL = 'https://js.dump.academy/keksobooking';
-  var errorCodeMap = {
+  var errorMessageMap = {
     400: 'Неверный запрос',
     401: 'Пользователь не авторизован',
     403: 'Доступ запрещен',
     404: 'Ничего не найдено',
     500: 'Внутренняя ошибка сервера'
   };
-
-  var OK_STATUS = 200;
 
   var createRequest = function (successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
@@ -20,7 +19,7 @@
       if (xhr.status === OK_STATUS) {
         successHandler(xhr.response);
       } else {
-        errorHandler('Код ошибки: ' + xhr.status + ' ' + errorCodeMap[xhr.status]);
+        errorHandler('Код ошибки: ' + xhr.status + ' ' + errorMessageMap[xhr.status]);
       }
     });
 

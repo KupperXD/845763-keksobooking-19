@@ -5,7 +5,6 @@
     min: 10000,
     max: 50000
   };
-
   var filtersMap = document.querySelector('.map__filters');
 
   var priceRunAway = {
@@ -49,20 +48,19 @@
     var filterData = data.slice();
 
     filterList.forEach(function (item) {
-      if (item.id === 'housing-price') {
-        filterData = filterByPrice(filterData, item.value);
-      } else {
-        switch (item.id) {
-          case 'housing-type':
-            filterData = filterValue(filterData, 'type', item.value);
-            break;
-          case 'housing-rooms':
-            filterData = filterValue(filterData, 'rooms', item.value);
-            break;
-          case 'housing-guests':
-            filterData = filterValue(filterData, 'guests', item.value);
-            break;
-        }
+      switch (item.id) {
+        case 'housung-price':
+          filterData = filterByPrice(filterData, item.value);
+          break;
+        case 'housing-type':
+          filterData = filterValue(filterData, 'type', item.value);
+          break;
+        case 'housing-rooms':
+          filterData = filterValue(filterData, 'rooms', item.value);
+          break;
+        case 'housing-guests':
+          filterData = filterValue(filterData, 'guests', item.value);
+          break;
       }
     });
 
@@ -73,8 +71,5 @@
     return filterData;
   };
 
-  window.filter = {
-    getFilterData: getFilterData
-  };
-
+  window.filter = getFilterData;
 })();

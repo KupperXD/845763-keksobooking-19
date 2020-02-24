@@ -7,7 +7,6 @@
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
 
-
   var addPin = function (obj) {
     var advertElement = templatePin.cloneNode(true);
     var avatarImage = advertElement.querySelector('img');
@@ -23,10 +22,9 @@
 
   var render = function (data) {
     var fragment = document.createDocumentFragment();
-    var dataCopy = data.slice();
 
-    dataCopy.length = (dataCopy.length > ADVERT_MAX) ? ADVERT_MAX : dataCopy.length;
-    dataCopy.forEach(function (advert) {
+    data.length = (data.length > ADVERT_MAX) ? ADVERT_MAX : data.length;
+    data.forEach(function (advert) {
       fragment.appendChild(addPin(advert));
     });
 
@@ -35,16 +33,15 @@
 
   var delet = function () {
     var pins = mapPins.querySelectorAll('.map__pin');
-    for (var i = 0; i < pins.length; i++) {
-      if (!pins[i].classList.contains('map__pin--main')) {
-        pins[i].remove();
+    pins.forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        pin.remove();
       }
-    }
+    });
   };
 
   window.pin = {
     render: render,
     delet: delet
   };
-
 })();

@@ -5,7 +5,6 @@
   var selectGuests = document.querySelector('#capacity');
   var form = document.querySelector('.ad-form');
 
-
   var getValidQuantityRooms = function () {
     var roomsNumber = Number(selectRoom.value);
     var guestsNumber = Number(selectGuests.value);
@@ -34,7 +33,6 @@
 
   form.addEventListener('submit', function (evt) {
     getValidQuantityRooms();
-
     window.server.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
   });
@@ -42,5 +40,4 @@
   form.addEventListener('reset', function () {
     window.map.disabledPage();
   });
-
 })();
