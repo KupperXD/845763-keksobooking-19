@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
+  var OK_STATUS = 200;
   var URL = 'https://js.dump.academy/keksobooking';
-  var StatusCode = {
-    OK: 200,
+  var errorMessageMap = {
     400: 'Неверный запрос',
     401: 'Пользователь не авторизован',
     403: 'Доступ запрещен',
@@ -16,15 +16,15 @@
     xhr.responseType = 'json';
     xhr.timeout = 10000;
     xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
+      if (xhr.status === OK_STATUS) {
         successHandler(xhr.response);
       } else {
-        errorHandler('Код ошибки: ' + xhr.status + ' ' + StatusCode[xhr.status]);
+        errorHandler('Код ошибки: ' + xhr.status + ' ' + errorMessageMap[xhr.status]);
       }
     });
 
     xhr.addEventListener('error', function () {
-      errorHandler('Ошибка сосединения! Проверь интэрнэт друг!');
+      errorHandler('Ошибка соединения! Проверь интернет друг!');
     });
 
     xhr.addEventListener('timeout', function () {

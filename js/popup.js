@@ -2,18 +2,15 @@
 
 (function () {
   var ESC_KEY = 'Escape';
-
   var main = document.querySelector('main');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-
 
   var remove = function (popup) {
     return function () {
       document.querySelector(popup).remove();
     };
   };
-
 
   var removeSuccess = remove('.success');
   var removeError = remove('.error');
@@ -39,9 +36,12 @@
     success.addEventListener('click', removeSuccess);
   };
 
-  var addError = function () {
+  var addError = function (message) {
     var error = errorTemplate.cloneNode(true);
     main.prepend(error);
+    var errorMessage = document.querySelector('.error__message');
+    errorMessage.textContent = message;
+    window.map.disabledPage();
     document.addEventListener('keydown', escErrorHandler);
     error.addEventListener('click', removeError);
   };
@@ -50,5 +50,4 @@
     addSuccess: addSuccess,
     addError: addError
   };
-
 })();

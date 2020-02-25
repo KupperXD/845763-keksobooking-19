@@ -5,24 +5,22 @@
   var LEFT_MOUSE_CLICK = 0;
   var INDENTATION_PIN = 54;
   var HALF_SIZE_PIN = 32;
-
-
   var mainMapPin = document.querySelector('.map__pin--main');
   var fieldSetsForm = document.querySelectorAll('fieldset');
   var filterMap = document.querySelectorAll('.map__filter');
   var adressInput = document.querySelector('#address');
-
+  var filterForm = document.querySelector('.map__filters');
 
   var getDisabledForm = function (fieldset) {
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = true;
-    }
+    fieldset.forEach(function (item) {
+      item.disabled = true;
+    });
   };
 
-  var deletDisabledForm = function (fieldset) {
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = false;
-    }
+  var deleteDisabledForm = function (fieldset) {
+    fieldset.forEach(function (item) {
+      item.disabled = false;
+    });
   };
 
   var getCoordinate = function () {
@@ -58,19 +56,12 @@
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   };
 
-  var errorHandler = function (message) {
-    window.popup.addError();
-    var errorMessage = document.querySelector('.error__message');
-    errorMessage.textContent = message;
-    disabledPage();
-  };
-
-  var activPage = function () {
+  var activePage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
-    deletDisabledForm(fieldSetsForm);
-    deletDisabledForm(filterMap);
-    window.server.load(window.pin.render, errorHandler);
+    deleteDisabledForm(fieldSetsForm);
+    deleteDisabledForm(filterMap);
+    window.data.defaultAdvert();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
@@ -78,18 +69,19 @@
 
   var pinMouseDownHandler = function (evt) {
     if (evt.button === LEFT_MOUSE_CLICK) {
-      activPage();
+      activePage();
     }
   };
 
   var pinKeyDownHandler = function (evt) {
     if (evt.key === ENTER_KEY) {
-      activPage();
+      activePage();
     }
   };
 
   mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+  filterForm.addEventListener('change', window.data.updateAdverts);
 
   window.map = {
     disabledPage: disabledPage
