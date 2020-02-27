@@ -37,10 +37,9 @@
 
   var addError = function (message) {
     var error = errorTemplate.cloneNode(true);
-    main.prepend(error);
-    var errorMessage = document.querySelector('.error__message');
+    var errorMessage = error.querySelector('.error__message');
     errorMessage.textContent = message;
-    window.map.disabledPage();
+    main.prepend(error);
     document.addEventListener('keydown', escErrorHandler);
     error.addEventListener('click', removeError);
   };

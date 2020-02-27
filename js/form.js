@@ -15,7 +15,7 @@
   var typeHousing = form.querySelector('#type');
   var timeInField = form.querySelector('#timein');
   var timeOutField = form.querySelector('#timeout');
-  var submitButton = form.querySelector('.ad-form__submit');
+  var buttonSumbit = form.querySelector('.ad-form__submit');
 
   var getValidQuantityRooms = function () {
     var roomsNumber = Number(selectRoom.value);
@@ -23,6 +23,8 @@
 
     if (roomsNumber === 100 && guestsNumber !== 0) {
       selectRoom.setCustomValidity('100 комнат не для гостей!');
+    } else if (roomsNumber !== 100 && guestsNumber === 0) {
+      selectRoom.setCustomValidity('Для 0 гостей подходит только 100 комнат');
     } else if (roomsNumber < guestsNumber) {
       selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
     } else {
@@ -72,34 +74,28 @@
     }
   };
 
-  var changeFormValue = function () {
-    timeInField.addEventListener('change', getTimeValid);
-    timeOutField.addEventListener('change', getTimeValid);
-    typeHousing.addEventListener('change', getValidMinPrice);
-    selectRoom.addEventListener('change', getValidQuantityRooms);
-    selectGuests.addEventListener('change', getValidQuantityRooms);
-  };
-
-  changeFormValue();
+  priceInput.addEventListener('input', inputPriceHandler);
+  headingInput.addEventListener('input', getValidHeading);
+  timeInField.addEventListener('change', getTimeValid);
+  timeOutField.addEventListener('change', getTimeValid);
+  typeHousing.addEventListener('change', getValidMinPrice);
+  selectRoom.addEventListener('change', getValidQuantityRooms);
+  selectGuests.addEventListener('change', getValidQuantityRooms);
 
   var successHandler = function () {
-    window.map.disabledPage();
     window.popup.addSuccess();
+    window.map.disabledPage();
     form.reset();
   };
 
   var errorHandler = function (message) {
     window.popup.addError(message);
+    form.reset();
   };
 
-  submitButton.addEventListener('click', function () {
-    getValidHeading();
-    inputPriceHandler();
-  });
+  buttonSumbit.addEventListener('click', getValidQuantityRooms);
 
   form.addEventListener('submit', function (evt) {
-    getValidHeading();
-    inputPriceHandler();
     window.server.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
   });
