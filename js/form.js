@@ -7,9 +7,9 @@
     house: 5000,
     palace: 10000
   }
-  var selectRoom = document.querySelector('#room_number');
-  var selectGuests = document.querySelector('#capacity');
   var form = document.querySelector('.ad-form');
+  var selectRoom = form.querySelector('#room_number');
+  var selectGuests = form.querySelector('#capacity');
   var headingInput = form.querySelector('#title');
   var priceInput = form.querySelector('#price');
   var typeHousing = form.querySelector('#type');
@@ -88,8 +88,8 @@
     form.reset();
   };
 
-  var errorHandler = function () {
-    window.popup.addError();
+  var errorHandler = function (message) {
+    window.popup.addError(message);
   };
 
   submitButton.addEventListener('click', function () {

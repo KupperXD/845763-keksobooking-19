@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEY = 'Escape';
   var main = document.querySelector('main');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -16,14 +15,14 @@
   var removeError = remove('.error');
 
   var escSuccessHandler = function (evt) {
-    if (evt.key === ESC_KEY) {
+    if (evt.key === window.constans.ESC_KEY) {
       removeSuccess();
       document.removeEventListener('keydown', escSuccessHandler);
     }
   };
 
   var escErrorHandler = function (evt) {
-    if (evt.key === ESC_KEY) {
+    if (evt.key === window.constans.ESC_KEY) {
       removeError();
       document.removeEventListener('keydown', escErrorHandler);
     }
