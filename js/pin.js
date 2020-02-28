@@ -8,21 +8,21 @@
   var mapPins = document.querySelector('.map__pins');
 
   var addPin = function (obj) {
-    var advertElement = templatePin.cloneNode(true);
-    var avatarImage = advertElement.querySelector('img');
+    var advert = templatePin.cloneNode(true);
+    var avatarImage = advert.querySelector('img');
     var widthIndent = WIDTHPIN / 2;
     var objLink = obj;
 
-    advertElement.style.left = (obj.location.x - widthIndent) + 'px';
-    advertElement.style.top = (obj.location.y - HEIGHTPIN) + 'px';
+    advert.style.left = (obj.location.x - widthIndent) + 'px';
+    advert.style.top = (obj.location.y - HEIGHTPIN) + 'px';
     avatarImage.src = obj.author.avatar;
     avatarImage.alt = obj.offer.title;
 
-    advertElement.addEventListener('click', function () {
+    advert.addEventListener('click', function () {
       window.card.render(objLink);
     });
 
-    return advertElement;
+    return advert;
   };
 
   var render = function (data) {

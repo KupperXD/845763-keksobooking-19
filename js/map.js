@@ -17,12 +17,6 @@
     });
   };
 
-/*  var deleteDisabledForm = function (fieldset) {
-    fieldset.forEach(function (item) {
-      item.disabled = false;
-    });
-  };*/
-
   var getCoordinate = function () {
     var x = parseInt(mainMapPin.style.left, 10);
     var y = parseInt(mainMapPin.style.top, 10);
