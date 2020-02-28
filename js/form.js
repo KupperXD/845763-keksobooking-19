@@ -16,17 +16,16 @@
   var typeHousing = form.querySelector('#type');
   var timeInField = form.querySelector('#timein');
   var timeOutField = form.querySelector('#timeout');
-  var buttonSumbit = form.querySelector('.ad-form__submit');
-
+  var buttonReset = form.querySelector('.ad-form__reset');
   var arrayFieldset = [selectRoom, selectGuests, headingInput, priceInput, typeHousing, timeInField, timeOutField];
 
-  var getBorder = function(item, color) {
+  var getBorder = function (item, color) {
     item.style.borderColor = color;
   };
 
   var getBorderInvalid = function () {
     arrayFieldset.forEach(function (item) {
-      item.addEventListener('invalid', function (evt) {
+      item.addEventListener('invalid', function () {
         getBorder(item, 'red');
       });
     });
@@ -38,7 +37,8 @@
     var roomsNumber = Number(selectRoom.value);
     var guestsNumber = Number(selectGuests.value);
 
-    getBorder(selectRoom, 'red')
+    getBorder(selectRoom, 'red');
+
     if (roomsNumber === 100 && guestsNumber !== 0) {
       selectRoom.setCustomValidity('100 комнат не для гостей!');
     } else if (roomsNumber !== 100 && guestsNumber === 0) {
@@ -47,20 +47,21 @@
       selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
     } else {
       selectRoom.setCustomValidity('');
-      getBorder(selectRoom, 'green')
+      getBorder(selectRoom, 'green');
     }
   };
 
-  var getValidHeading = function (evt) {
+  getValidQuantityRooms();
+
+  var getValidHeading = function () {
     getBorder(headingInput, 'red');
     if (headingInput.validity.tooShort) {
       headingInput.setCustomValidity('Заголовок должен быть минимум из 30 символов');
     } else if (headingInput.validity.tooLong) {
-        headingInput.setCustomValidity('Слишком длинный заголовок! Значение должно быть не более 100 символов!');
+      headingInput.setCustomValidity('Слишком длинный заголовок! Значение должно быть не более 100 символов!');
     } else if (headingInput.validity.valueMissing) {
-        headingInput.setCustomValidity('Друг нужно бы заполнить заголовок!');
-    }
-     else {
+      headingInput.setCustomValidity('Друг нужно бы заполнить заголовок!');
+    } else {
       headingInput.setCustomValidity('');
       getBorder(headingInput, 'green');
     }
@@ -106,11 +107,11 @@
   selectGuests.addEventListener('change', getValidQuantityRooms);
 
   var successHandler = function () {
+    form.reset();
+    filter.reset();
     window.popup.addSuccess();
     window.map.disabledPage();
     window.card.delete();
-    form.reset();
-    filter.reset();
   };
 
   var errorHandler = function (message) {
@@ -119,14 +120,18 @@
     filter.reset();
   };
 
-  buttonSumbit.addEventListener('click', getValidQuantityRooms);
+  var clickButtonResetHandler = function (evt) {
+    evt.preventDefault();
+    form.reset();
+    filter.reset();
+    window.map.disabledPage();
+    window.card.delete();
+  };
 
   form.addEventListener('submit', function (evt) {
     window.server.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
   });
 
-  form.addEventListener('reset', function () {
-    window.map.disabledPage();
-  });
+  buttonReset.addEventListener('click', clickButtonResetHandler);
 })();
