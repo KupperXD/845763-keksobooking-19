@@ -49,7 +49,7 @@
 
     filterList.forEach(function (item) {
       switch (item.id) {
-        case 'housung-price':
+        case 'housing-price':
           filterData = filterByPrice(filterData, item.value);
           break;
         case 'housing-type':

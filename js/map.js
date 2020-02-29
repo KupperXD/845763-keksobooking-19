@@ -11,15 +11,9 @@
   var adressInput = document.querySelector('#address');
   var filterForm = document.querySelector('.map__filters');
 
-  var getDisabledForm = function (fieldset) {
+  var getDisabled = function (fieldset, value) {
     fieldset.forEach(function (item) {
-      item.disabled = true;
-    });
-  };
-
-  var deleteDisabledForm = function (fieldset) {
-    fieldset.forEach(function (item) {
-      item.disabled = false;
+      item.disabled = value;
     });
   };
 
@@ -41,16 +35,16 @@
     adressInput.value = coordinateX + ', ' + coordinateY;
   };
 
-  getDisabledForm(fieldSetsForm);
-  getDisabledForm(filterMap);
+  getDisabled(fieldSetsForm, true);
+  getDisabled(filterMap, true);
   writeInputAdress(0);
 
   var disabledPage = function () {
     window.utils.addClass('.map', 'map--faded');
     window.utils.addClass('.ad-form', 'ad-form--disabled');
-    window.pin.delet();
-    getDisabledForm(fieldSetsForm);
-    getDisabledForm(filterMap);
+    window.pin.delete();
+    getDisabled(fieldSetsForm, true);
+    getDisabled(filterMap, true);
     writeInputAdress(0);
     mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
@@ -59,8 +53,8 @@
   var activePage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
-    deleteDisabledForm(fieldSetsForm);
-    deleteDisabledForm(filterMap);
+    getDisabled(fieldSetsForm, false);
+    getDisabled(filterMap, false);
     window.data.defaultAdvert();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);

@@ -8,16 +8,21 @@
   var mapPins = document.querySelector('.map__pins');
 
   var addPin = function (obj) {
-    var advertElement = templatePin.cloneNode(true);
-    var avatarImage = advertElement.querySelector('img');
+    var advert = templatePin.cloneNode(true);
+    var avatarImage = advert.querySelector('img');
     var widthIndent = WIDTHPIN / 2;
+    var objLink = obj;
 
-    advertElement.style.left = (obj.location.x - widthIndent) + 'px';
-    advertElement.style.top = (obj.location.y - HEIGHTPIN) + 'px';
+    advert.style.left = (obj.location.x - widthIndent) + 'px';
+    advert.style.top = (obj.location.y - HEIGHTPIN) + 'px';
     avatarImage.src = obj.author.avatar;
     avatarImage.alt = obj.offer.title;
 
-    return advertElement;
+    advert.addEventListener('click', function () {
+      window.card.render(objLink);
+    });
+
+    return advert;
   };
 
   var render = function (data) {
@@ -31,7 +36,7 @@
     mapPins.appendChild(fragment);
   };
 
-  var delet = function () {
+  var removePin = function () {
     var pins = mapPins.querySelectorAll('.map__pin');
     pins.forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
@@ -42,6 +47,6 @@
 
   window.pin = {
     render: render,
-    delet: delet
+    delete: removePin
   };
 })();

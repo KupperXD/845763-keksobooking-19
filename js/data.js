@@ -17,7 +17,8 @@
   };
 
   var updateAdverts = function () {
-    window.pin.delet();
+    window.pin.delete();
+    window.card.delete();
     window.pin.render(window.filter(adverts));
   };
 
