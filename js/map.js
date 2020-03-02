@@ -5,10 +5,12 @@
   var LEFT_MOUSE_CLICK = 0;
   var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
-  var MIN_Y = 46;
-  var MAX_Y = 546;
-  var MIN_X = -32;
-  var MAX_X = 1167;
+  var Coords = {
+    MIN_Y: 46,
+    MAX_Y: 546,
+    MIN_X: -32,
+    MAX_X: 1167
+  };
   var defaultCoords = {
     x: 570,
     y: 375
@@ -96,9 +98,9 @@
           y: startCoords.y - moveEvt.clientY
         };
 
-        var startCoordsPin = {
-          x: mainMapPin.offsetLeft,
-          y: mainMapPin.offsetTop
+        var currentCoords = {
+          x: mainMapPin.offsetLeft - shift.x,
+          y: mainMapPin.offsetTop - shift.y
         };
 
         startCoords = {
@@ -106,22 +108,24 @@
           y: moveEvt.clientY,
         };
 
-        if (MIN_Y > startCoordsPin.y) {
-          mainMapPin.style.top = MIN_Y + 'px';
-        } else if (MAX_Y < startCoordsPin.y) {
-          mainMapPin.style.top = MAX_Y + 'px';
-        } else {
-          mainMapPin.style.top = (startCoordsPin.y - shift.y) + 'px';
+        mainMapPin.style.left = currentCoords.x + 'px';
+        mainMapPin.style.top = currentCoords.y + 'px';
+
+        if (Coords.MIN_Y > currentCoords.y) {
+          mainMapPin.style.top = Coords.MIN_Y + 'px';
         }
 
-        if (MIN_X > startCoordsPin.x) {
-          mainMapPin.style.left = MIN_X + 'px';
-        } else if (MAX_X < startCoordsPin.x) {
-          mainMapPin.style.left = MAX_X + 'px';
-        } else {
-          mainMapPin.style.left = (startCoordsPin.x - shift.x) + 'px';
+        if (Coords.MAX_Y < currentCoords.y) {
+          mainMapPin.style.top = Coords.MAX_Y + 'px';
         }
 
+        if (Coords.MIN_X > currentCoords.x) {
+          mainMapPin.style.left = Coords.MIN_X + 'px';
+        }
+
+        if (Coords.MAX_X < currentCoords.x) {
+          mainMapPin.style.left = Coords.MAX_X + 'px';
+        }
         writeInputAdress(INDENTATION_PIN);
       };
 
