@@ -5,7 +5,7 @@
   var LEFT_MOUSE_CLICK = 0;
   var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
-  var MIN_Y = 130;
+  var MIN_Y = 46;
   var MAX_Y = 546;
   var MIN_X = -32;
   var MAX_X = 1167;
@@ -112,7 +112,7 @@
           mainMapPin.style.top = MAX_Y + 'px';
         } else {
           mainMapPin.style.top = (startCoordsPin.y - shift.y) + 'px';
-        };
+        }
 
         if (MIN_X > startCoordsPin.x) {
           mainMapPin.style.left = MIN_X + 'px';
@@ -120,26 +120,23 @@
           mainMapPin.style.left = MAX_X + 'px';
         } else {
           mainMapPin.style.left = (startCoordsPin.x - shift.x) + 'px';
-        };
+        }
 
         writeInputAdress(INDENTATION_PIN);
       };
 
       var pinUpMouseHandler = function (upEvt) {
         upEvt.preventDefault();
-
         if (!active) {
-          activePage()
-        };
-
+          activePage();
+        }
         document.removeEventListener('mousemove', pinMoveMouseHandler);
         document.removeEventListener('mouseup', pinUpMouseHandler);
       };
 
       document.addEventListener('mousemove', pinMoveMouseHandler);
       document.addEventListener('mouseup', pinUpMouseHandler);
-  };
-
+    }
   });
 
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
