@@ -3,14 +3,27 @@
 (function () {
   var ENTER_KEY = 'Enter';
   var LEFT_MOUSE_CLICK = 0;
-  var INDENTATION_PIN = 54;
+  var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
+  var MIN_Y = 130;
+  var MAX_Y = 546;
+  var MIN_X = -32;
+  var MAX_X = 1167;
+  var defaultCoords = {
+    x: 570,
+    y: 375
+  };
   var mainMapPin = document.querySelector('.map__pin--main');
   var fieldSetsForm = document.querySelectorAll('fieldset');
   var filterMap = document.querySelectorAll('.map__filter');
   var adressInput = document.querySelector('#address');
   var filterForm = document.querySelector('.map__filters');
-  var flag = false;
+  var active = false;
+
+  var getDefaultCoords = function () {
+    mainMapPin.style.left = defaultCoords.x + 'px';
+    mainMapPin.style.top = defaultCoords.y + 'px';
+  };
 
   var getDisabled = function (fieldset, value) {
     fieldset.forEach(function (item) {
@@ -47,9 +60,9 @@
     getDisabled(fieldSetsForm, true);
     getDisabled(filterMap, true);
     writeInputAdress(0);
-    mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
-    flag = false;
+    getDefaultCoords();
+    active = false;
   };
 
   var activePage = function () {
@@ -60,13 +73,7 @@
     window.data.defaultAdvert();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
-    flag = true;
-  };
-
-  var pinMouseDownHandler = function (evt) {
-    if (evt.button === LEFT_MOUSE_CLICK) {
-      activePage();
-    }
+    active = true;
   };
 
   var pinKeyDownHandler = function (evt) {
@@ -75,44 +82,63 @@
     }
   };
 
-//  mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
   mainMapPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    var pinMoveMouseHandler = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+    if (evt.button === LEFT_MOUSE_CLICK) {
+      evt.preventDefault();
+      var startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
       };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+      var pinMoveMouseHandler = function (moveEvt) {
+        var shift = {
+          x: startCoords.x - moveEvt.clientX,
+          y: startCoords.y - moveEvt.clientY
+        };
+
+        var startCoordsPin = {
+          x: mainMapPin.offsetLeft,
+          y: mainMapPin.offsetTop
+        };
+
+        startCoords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY,
+        };
+
+        if (MIN_Y > startCoordsPin.y) {
+          mainMapPin.style.top = MIN_Y + 'px';
+        } else if (MAX_Y < startCoordsPin.y) {
+          mainMapPin.style.top = MAX_Y + 'px';
+        } else {
+          mainMapPin.style.top = (startCoordsPin.y - shift.y) + 'px';
+        };
+
+        if (MIN_X > startCoordsPin.x) {
+          mainMapPin.style.left = MIN_X + 'px';
+        } else if (MAX_X < startCoordsPin.x) {
+          mainMapPin.style.left = MAX_X + 'px';
+        } else {
+          mainMapPin.style.left = (startCoordsPin.x - shift.x) + 'px';
+        };
+
+        writeInputAdress(INDENTATION_PIN);
       };
 
-      mainMapPin.style.top = (mainMapPin.offsetTop - shift.y) + 'px';
-      mainMapPin.style.left = (mainMapPin.offsetLeft - shift.x) + 'px';
-    };
+      var pinUpMouseHandler = function (upEvt) {
+        upEvt.preventDefault();
 
-    var pinUpMouseHandler = function (upEvt) {
-      upEvt.preventDefault();
+        if (!active) {
+          activePage()
+        };
 
-      if (!flag) {
-        activePage()
+        document.removeEventListener('mousemove', pinMoveMouseHandler);
+        document.removeEventListener('mouseup', pinUpMouseHandler);
       };
 
-      document.removeEventListener('mousemove', pinMoveMouseHandler);
-      document.removeEventListener('mouseup', pinUpMouseHandler);
-    };
-
-    document.addEventListener('mousemove', pinMoveMouseHandler);
-    document.addEventListener('mouseup', pinUpMouseHandler);
+      document.addEventListener('mousemove', pinMoveMouseHandler);
+      document.addEventListener('mouseup', pinUpMouseHandler);
+  };
 
   });
 
