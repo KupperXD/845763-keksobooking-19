@@ -10,6 +10,7 @@
   var filterMap = document.querySelectorAll('.map__filter');
   var adressInput = document.querySelector('#address');
   var filterForm = document.querySelector('.map__filters');
+  var flag = false;
 
   var getDisabled = function (fieldset, value) {
     fieldset.forEach(function (item) {
@@ -48,6 +49,7 @@
     writeInputAdress(0);
     mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
+    flag = false;
   };
 
   var activePage = function () {
@@ -57,8 +59,8 @@
     getDisabled(filterMap, false);
     window.data.defaultAdvert();
     writeInputAdress(INDENTATION_PIN);
-    mainMapPin.removeEventListener('mousedown', pinMouseDownHandler);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
+    flag = true;
   };
 
   var pinMouseDownHandler = function (evt) {
@@ -73,7 +75,47 @@
     }
   };
 
-  mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
+//  mainMapPin.addEventListener('mousedown', pinMouseDownHandler);
+  mainMapPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var pinMoveMouseHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mainMapPin.style.top = (mainMapPin.offsetTop - shift.y) + 'px';
+      mainMapPin.style.left = (mainMapPin.offsetLeft - shift.x) + 'px';
+    };
+
+    var pinUpMouseHandler = function (upEvt) {
+      upEvt.preventDefault();
+
+      if (!flag) {
+        activePage()
+      };
+
+      document.removeEventListener('mousemove', pinMoveMouseHandler);
+      document.removeEventListener('mouseup', pinUpMouseHandler);
+    };
+
+    document.addEventListener('mousemove', pinMoveMouseHandler);
+    document.addEventListener('mouseup', pinUpMouseHandler);
+
+  });
+
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   filterForm.addEventListener('change', window.data.updateAdverts);
 
