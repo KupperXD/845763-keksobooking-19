@@ -12,16 +12,21 @@
       height: 70
     }
   };
+  var defaultAvatar = {
+    img: 'img/muffin-grey.svg',
+    alt: 'Аватар пользователя'
+  };
   var previewPhoto = document.querySelector('.ad-form__photo');
   var previewAvatar = document.querySelector('.ad-form-header__preview');
   var fileAvatar = document.querySelector('.ad-form-header__upload input[type=file]');
   var filePhoto = document.querySelector('.ad-form__upload input[type=file]');
 
-  var getImg = function (photo, preview, width, height) {
+  var getImg = function (photo, preview, width, height, alt) {
     var img = document.createElement('img');
     img.src = photo;
     img.width = width;
     img.height = height;
+    img.alt = alt;
     preview.textContent = '';
     preview.appendChild(img);
   };
@@ -44,14 +49,25 @@
     }
   };
 
+  var getReset = function () {
+    getImg(defaultAvatar.img, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, defaultAvatar.alt);
+    previewPhoto.textContent = '';
+  };
+
   var avatarChangeHandler = function () {
-    getPhoto(fileAvatar, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height);
+    var alternative = 'Аватар Пользователя';
+    getPhoto(fileAvatar, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternative);
   };
 
   var photoChangeHandler = function () {
-    getPhoto(filePhoto, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height);
+    var alternative = 'Фотография жилья';
+    getPhoto(filePhoto, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternative);
   };
 
   fileAvatar.addEventListener('change', avatarChangeHandler);
   filePhoto.addEventListener('change', photoChangeHandler);
+
+  window.photo = {
+    reset: getReset
+  }
 })();

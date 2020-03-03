@@ -106,26 +106,34 @@
   selectRoom.addEventListener('change', getValidQuantityRooms);
   selectGuests.addEventListener('change', getValidQuantityRooms);
 
-  var successHandler = function () {
+  var resetState = function () {
     form.reset();
     filter.reset();
+    window.photo.reset();
+    window.card.delete();
+
+    arrayFieldset.forEach(function (it) {
+      getBorder(it, '');
+    });
+
+    getValidMinPrice();
+  };
+
+  var successHandler = function () {
+    resetState();
     window.popup.addSuccess();
     window.map.disabledPage();
-    window.card.delete();
   };
 
   var errorHandler = function (message) {
+    resetState();
     window.popup.addError(message);
-    form.reset();
-    filter.reset();
   };
 
   var clickButtonResetHandler = function (evt) {
     evt.preventDefault();
-    form.reset();
-    filter.reset();
+    resetState();
     window.map.disabledPage();
-    window.card.delete();
   };
 
   form.addEventListener('submit', function (evt) {
