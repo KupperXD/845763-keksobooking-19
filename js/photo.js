@@ -16,10 +16,21 @@
     img: 'img/muffin-grey.svg',
     alt: 'Аватар пользователя'
   };
-  var previewPhoto = document.querySelector('.ad-form__photo');
-  var previewAvatar = document.querySelector('.ad-form-header__preview');
-  var fileAvatar = document.querySelector('.ad-form-header__upload input[type=file]');
-  var filePhoto = document.querySelector('.ad-form__upload input[type=file]');
+  var alternativeStringMap = {
+    avatar: 'Аватар Пользователя',
+    photo: 'Фотография жилья'
+  };
+  var dropDragEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
+  var dropHighlight = ['dragenter', 'dragover'];
+  var dropUnHighlight = ['dragleave', 'drop'];
+  var form = document.querySelector('.ad-form');
+  var previewPhoto = form.querySelector('.ad-form__photo');
+  var previewAvatar = form.querySelector('.ad-form-header__preview');
+  var fileAvatar = form.querySelector('.ad-form-header__upload input[type=file]');
+  var filePhoto = form.querySelector('.ad-form__upload input[type=file]');
+  var dropZoneAvatar = form.querySelector('.ad-form-header__drop-zone');
+  var dropZonePhoto = form.querySelector('.ad-form__drop-zone');
+  var dropZone = [dropZoneAvatar, dropZonePhoto];
 
   var getImg = function (photo, preview, width, height, alt) {
     var img = document.createElement('img');
@@ -31,8 +42,8 @@
     preview.appendChild(img);
   };
 
-  var getPhoto = function (input, preview, width, height) {
-    var file = input.files[0];
+  var getPhoto = function (picture, preview, width, height, alt) {
+    var file = picture;
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPE.some(function (it) {
@@ -43,7 +54,7 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        getImg(reader.result, preview, width, height);
+        getImg(reader.result, preview, width, height, alt);
       });
       reader.readAsDataURL(file);
     }
@@ -55,14 +66,47 @@
   };
 
   var avatarChangeHandler = function () {
-    var alternative = 'Аватар Пользователя';
-    getPhoto(fileAvatar, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternative);
+    var pictureFile = fileAvatar.files[0];
+    getPhoto(pictureFile, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternativeStringMap.avatar);
   };
 
   var photoChangeHandler = function () {
-    var alternative = 'Фотография жилья';
-    getPhoto(filePhoto, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternative);
+    var pictureFile = filePhoto.files[0];
+    getPhoto(pictureFile, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternativeStringMap.photo);
   };
+
+  var dropAvatarHandler = function (evt) {
+    var dataTransfer = evt.dataTransfer;
+    var pictureFile = dataTransfer.files[0];
+    getPhoto(pictureFile, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternativeStringMap.avatar);
+  };
+
+  var dropPhotoHandler = function (evt) {
+    var dataTransfer = evt.dataTransfer;
+    var pictureFile = dataTransfer.files[0];
+    getPhoto(pictureFile, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternativeStringMap.photo);
+  };
+
+  dropZone.forEach(function (zone) {
+    dropDragEvents.forEach(function (it) {
+      zone.addEventListener(it, window.utils.preventDefaults);
+    });
+
+    dropHighlight.forEach(function (item) {
+      zone.addEventListener(item, function () {
+        zone.style.borderColor = '#ff5635';
+      });
+    });
+
+    dropUnHighlight.forEach(function (listEvt) {
+      zone.addEventListener(listEvt, function () {
+        zone.style.borderColor = '';
+      })
+    })
+  });
+
+  dropZoneAvatar.addEventListener('drop', dropAvatarHandler);
+  dropZonePhoto.addEventListener('drop', dropPhotoHandler);
 
   fileAvatar.addEventListener('change', avatarChangeHandler);
   filePhoto.addEventListener('change', photoChangeHandler);

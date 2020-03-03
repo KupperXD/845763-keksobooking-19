@@ -36,11 +36,17 @@
     };
   };
 
+  var preventDefaults = function (evt) {
+    evt.preventDefault();
+    evt.preventPropgation();
+  };
+
   window.utils = {
     getRandomValue: getRandomValue,
     getRandomArray: getRandomArray,
     removeClass: removeClass,
     addClass: addClass,
-    debounce: debounce
+    debounce: debounce,
+    preventDefaults: preventDefaults
   };
 })();
