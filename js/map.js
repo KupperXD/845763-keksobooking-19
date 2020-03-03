@@ -146,7 +146,7 @@
 
 
   var changeFilterHandler = function () {
-      window.utils.debounce(window.data.updateAdverts, DEBOUNCE_INTERVAL)();
+    window.utils.debounce(window.data.updateAdverts, DEBOUNCE_INTERVAL)();
   };
 
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
