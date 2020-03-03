@@ -5,6 +5,7 @@
   var LEFT_MOUSE_CLICK = 0;
   var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
+  var DEBOUNCE_INTERVAL = 500;
   var Coords = {
     MIN_Y: 46,
     MAX_Y: 546,
@@ -143,8 +144,13 @@
     }
   });
 
+
+  var changeFilterHandler = function () {
+      window.utils.debounce(window.data.updateAdverts, DEBOUNCE_INTERVAL)();
+  };
+
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
-  filterForm.addEventListener('change', window.data.updateAdverts);
+  filterForm.addEventListener('change', changeFilterHandler);
 
   window.map = {
     disabledPage: disabledPage

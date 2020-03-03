@@ -22,10 +22,25 @@
     document.querySelector(block).classList.add(nameClass);
   };
 
+  var debounce = function (fn, interval) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        fn.apply(null, parameters);
+      }, interval);
+    };
+  };
+
   window.utils = {
     getRandomValue: getRandomValue,
     getRandomArray: getRandomArray,
     removeClass: removeClass,
-    addClass: addClass
+    addClass: addClass,
+    debounce: debounce
   };
 })();
