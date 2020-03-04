@@ -17,14 +17,14 @@
   var timeInField = form.querySelector('#timein');
   var timeOutField = form.querySelector('#timeout');
   var buttonReset = form.querySelector('.ad-form__reset');
-  var arrayFieldset = [selectRoom, selectGuests, headingInput, priceInput, typeHousing, timeInField, timeOutField];
+  var arrayFieldsets = [selectRoom, selectGuests, headingInput, priceInput, typeHousing, timeInField, timeOutField];
 
   var getBorder = function (item, color) {
     item.style.borderColor = color;
   };
 
   var getBorderInvalid = function () {
-    arrayFieldset.forEach(function (item) {
+    arrayFieldsets.forEach(function (item) {
       item.addEventListener('invalid', function () {
         getBorder(item, 'red');
       });
@@ -112,7 +112,7 @@
     window.photo.reset();
     window.card.delete();
 
-    arrayFieldset.forEach(function (it) {
+    arrayFieldsets.forEach(function (it) {
       getBorder(it, '');
     });
 

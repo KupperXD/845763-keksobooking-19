@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var FILE_TYPE = ['gif', 'jpg', 'jpeg', 'png'];
+  var FILES_TYPE = ['gif', 'jpg', 'jpeg', 'png'];
   var imgSizeMap = {
     avatar: {
       width: 40,
@@ -20,9 +20,6 @@
     avatar: 'Аватар Пользователя',
     photo: 'Фотография жилья'
   };
-  var dropDragEvents = ['dragenter', 'dragover', 'dragleave', 'drop'];
-  var dropHighlight = ['dragenter', 'dragover'];
-  var dropUnHighlight = ['dragleave', 'drop'];
   var form = document.querySelector('.ad-form');
   var previewPhoto = form.querySelector('.ad-form__photo');
   var previewAvatar = form.querySelector('.ad-form-header__preview');
@@ -30,10 +27,11 @@
   var filePhoto = form.querySelector('.ad-form__upload input[type=file]');
   var dropZoneAvatar = form.querySelector('.ad-form-header__drop-zone');
   var dropZonePhoto = form.querySelector('.ad-form__drop-zone');
-  var dropZone = [dropZoneAvatar, dropZonePhoto];
+  var dropZones = [dropZoneAvatar, dropZonePhoto];
 
   var getImg = function (photo, preview, width, height, alt) {
     var img = document.createElement('img');
+
     img.src = photo;
     img.width = width;
     img.height = height;
@@ -46,7 +44,7 @@
     var file = picture;
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPE.some(function (it) {
+    var matches = FILES_TYPE.some(function (it) {
       return fileName.endsWith(it);
     });
 
@@ -65,53 +63,65 @@
     previewPhoto.textContent = '';
   };
 
+  var getDropZone = function (input) {
+    input.addEventListener('dragenter', function (enterEvt) {
+      enterEvt.preventDefault();
+      enterEvt.stopPropagation();
+      input.style.borderColor = '#ff5635';
+    });
+    input.addEventListener('dragleave', function (leaveEvt) {
+      leaveEvt.preventDefault();
+      leaveEvt.stopPropagation();
+      input.style.borderColor = '';
+    });
+    input.addEventListener('dragover', function (overEvt) {
+      overEvt.preventDefault();
+      overEvt.stopPropagation();
+      input.style.borderColor = '#ff5635';
+    });
+    input.addEventListener('drop', function (dropEvt) {
+      dropEvt.preventDefault();
+      dropEvt.stopPropagation();
+      input.style.borderColor = '';
+    });
+  };
+
   var avatarChangeHandler = function () {
     var pictureFile = fileAvatar.files[0];
+
     getPhoto(pictureFile, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternativeStringMap.avatar);
   };
 
   var photoChangeHandler = function () {
     var pictureFile = filePhoto.files[0];
+
     getPhoto(pictureFile, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternativeStringMap.photo);
   };
 
   var dropAvatarHandler = function (evt) {
     var dataTransfer = evt.dataTransfer;
     var pictureFile = dataTransfer.files[0];
+
     getPhoto(pictureFile, previewAvatar, imgSizeMap.avatar.width, imgSizeMap.avatar.height, alternativeStringMap.avatar);
   };
 
   var dropPhotoHandler = function (evt) {
     var dataTransfer = evt.dataTransfer;
     var pictureFile = dataTransfer.files[0];
+
     getPhoto(pictureFile, previewPhoto, imgSizeMap.photo.width, imgSizeMap.photo.height, alternativeStringMap.photo);
   };
 
-  dropZone.forEach(function (zone) {
-    dropDragEvents.forEach(function (it) {
-      zone.addEventListener(it, window.utils.preventDefaults);
-    });
-
-    dropHighlight.forEach(function (item) {
-      zone.addEventListener(item, function () {
-        zone.style.borderColor = '#ff5635';
-      });
-    });
-
-    dropUnHighlight.forEach(function (listEvt) {
-      zone.addEventListener(listEvt, function () {
-        zone.style.borderColor = '';
-      })
-    })
+  dropZones.forEach(function (item) {
+    getDropZone(item);
   });
 
   dropZoneAvatar.addEventListener('drop', dropAvatarHandler);
   dropZonePhoto.addEventListener('drop', dropPhotoHandler);
-
   fileAvatar.addEventListener('change', avatarChangeHandler);
   filePhoto.addEventListener('change', photoChangeHandler);
 
   window.photo = {
     reset: getReset
-  }
+  };
 })();

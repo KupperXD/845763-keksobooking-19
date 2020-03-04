@@ -30,6 +30,7 @@
 
   var addSuccess = function () {
     var success = successTemplate.cloneNode(true);
+
     main.prepend(success);
     document.addEventListener('keydown', escSuccessHandler);
     success.addEventListener('click', removeSuccess);
@@ -38,6 +39,7 @@
   var addError = function (message) {
     var error = errorTemplate.cloneNode(true);
     var errorMessage = error.querySelector('.error__message');
+
     errorMessage.textContent = message;
     main.prepend(error);
     document.addEventListener('keydown', escErrorHandler);
