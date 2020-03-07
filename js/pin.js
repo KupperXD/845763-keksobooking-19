@@ -38,6 +38,7 @@
 
   var removePin = function () {
     var pins = mapPins.querySelectorAll('.map__pin');
+
     pins.forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         pin.remove();

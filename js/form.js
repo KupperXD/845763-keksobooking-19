@@ -17,14 +17,14 @@
   var timeInField = form.querySelector('#timein');
   var timeOutField = form.querySelector('#timeout');
   var buttonReset = form.querySelector('.ad-form__reset');
-  var arrayFieldset = [selectRoom, selectGuests, headingInput, priceInput, typeHousing, timeInField, timeOutField];
+  var arrayFieldsets = [selectRoom, selectGuests, headingInput, priceInput, typeHousing, timeInField, timeOutField];
 
   var getBorder = function (item, color) {
     item.style.borderColor = color;
   };
 
   var getBorderInvalid = function () {
-    arrayFieldset.forEach(function (item) {
+    arrayFieldsets.forEach(function (item) {
       item.addEventListener('invalid', function () {
         getBorder(item, 'red');
       });
@@ -106,26 +106,34 @@
   selectRoom.addEventListener('change', getValidQuantityRooms);
   selectGuests.addEventListener('change', getValidQuantityRooms);
 
-  var successHandler = function () {
+  var resetState = function () {
     form.reset();
     filter.reset();
+    window.photo.reset();
+    window.card.delete();
+
+    arrayFieldsets.forEach(function (it) {
+      getBorder(it, '');
+    });
+
+    getValidMinPrice();
+  };
+
+  var successHandler = function () {
+    resetState();
     window.popup.addSuccess();
     window.map.disabledPage();
-    window.card.delete();
   };
 
   var errorHandler = function (message) {
+    resetState();
     window.popup.addError(message);
-    form.reset();
-    filter.reset();
   };
 
   var clickButtonResetHandler = function (evt) {
     evt.preventDefault();
-    form.reset();
-    filter.reset();
+    resetState();
     window.map.disabledPage();
-    window.card.delete();
   };
 
   form.addEventListener('submit', function (evt) {
