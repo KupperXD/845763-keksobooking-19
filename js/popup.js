@@ -28,12 +28,16 @@
     }
   };
 
+
   var addSuccess = function () {
     var success = successTemplate.cloneNode(true);
 
     main.prepend(success);
     document.addEventListener('keydown', escSuccessHandler);
-    success.addEventListener('click', removeSuccess);
+
+    success.addEventListener('click', function () {
+      removeSuccess();
+    });
   };
 
   var addError = function (message) {
@@ -43,7 +47,10 @@
     errorMessage.textContent = message;
     main.prepend(error);
     document.addEventListener('keydown', escErrorHandler);
-    error.addEventListener('click', removeError);
+
+    error.addEventListener('click', function () {
+      removeError();
+    });
   };
 
   window.popup = {

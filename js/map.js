@@ -23,12 +23,12 @@
   var filterForm = document.querySelector('.map__filters');
   var active = false;
 
-  var getDefaultCoords = function () {
+  var setDefaultCoords = function () {
     mainMapPin.style.left = defaultCoords.x + 'px';
     mainMapPin.style.top = defaultCoords.y + 'px';
   };
 
-  var getDisabled = function (fieldset, value) {
+  var setDisabled = function (fieldset, value) {
     fieldset.forEach(function (item) {
       item.disabled = value;
     });
@@ -52,28 +52,28 @@
     adressInput.value = coordinateX + ', ' + coordinateY;
   };
 
-  getDisabled(fieldSetsForm, true);
-  getDisabled(filterMap, true);
+  setDisabled(fieldSetsForm, true);
+  setDisabled(filterMap, true);
   writeInputAdress(0);
 
   var disabledPage = function () {
     window.utils.addClass('.map', 'map--faded');
     window.utils.addClass('.ad-form', 'ad-form--disabled');
     window.pin.delete();
-    getDisabled(fieldSetsForm, true);
-    getDisabled(filterMap, true);
+    setDisabled(fieldSetsForm, true);
+    setDisabled(filterMap, true);
     writeInputAdress(0);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
-    getDefaultCoords();
+    setDefaultCoords();
     active = false;
   };
 
   var activePage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
-    getDisabled(fieldSetsForm, false);
-    getDisabled(filterMap, false);
-    window.data.defaultAdvert();
+    setDisabled(fieldSetsForm, false);
+    setDisabled(filterMap, false);
+    window.data.default();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
     active = true;
@@ -86,8 +86,8 @@
   };
 
   mainMapPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
     if (evt.button === LEFT_MOUSE_CLICK) {
-      evt.preventDefault();
       var startCoords = {
         x: evt.clientX,
         y: evt.clientY
@@ -132,9 +132,11 @@
 
       var pinUpMouseHandler = function (upEvt) {
         upEvt.preventDefault();
+
         if (!active) {
           activePage();
         }
+
         document.removeEventListener('mousemove', pinMoveMouseHandler);
         document.removeEventListener('mouseup', pinUpMouseHandler);
       };
@@ -146,7 +148,7 @@
 
 
   var changeFilterHandler = function () {
-    window.utils.debounce(window.data.updateAdverts, DEBOUNCE_INTERVAL)();
+    window.utils.debounce(window.data.update, DEBOUNCE_INTERVAL)();
   };
 
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);

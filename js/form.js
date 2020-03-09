@@ -51,8 +51,6 @@
     }
   };
 
-  getValidQuantityRooms();
-
   var getValidHeading = function () {
     getBorder(headingInput, 'red');
     if (headingInput.validity.tooShort) {
@@ -69,12 +67,14 @@
 
   var getValidMinPrice = function () {
     var value = typeHousing.value;
+
     priceInput.min = minPriceMap[value].toString();
     priceInput.placeholder = minPriceMap[value].toString();
   };
 
   var inputPriceHandler = function () {
     var price = Number(priceInput.value);
+
     getBorder(priceInput, 'red');
     if (price < minPriceMap[typeHousing.value]) {
       priceInput.setCustomValidity('Цена должна быть не меньше чем ' + minPriceMap[typeHousing.value]);
@@ -88,23 +88,42 @@
     var target = evt.target;
     var timeIn = timeInField.value;
     var timeOut = timeOutField.value;
+
     switch (target.id) {
       case 'timein':
         timeOutField.value = timeIn;
         break;
-      case 'timeout':
+      default:
         timeInField.value = timeOut;
         break;
     }
   };
 
   priceInput.addEventListener('input', inputPriceHandler);
-  headingInput.addEventListener('input', getValidHeading);
-  timeInField.addEventListener('change', getTimeValid);
-  timeOutField.addEventListener('change', getTimeValid);
-  typeHousing.addEventListener('change', getValidMinPrice);
-  selectRoom.addEventListener('change', getValidQuantityRooms);
-  selectGuests.addEventListener('change', getValidQuantityRooms);
+
+  headingInput.addEventListener('input', function (evt) {
+    getValidHeading(evt);
+  });
+
+  timeInField.addEventListener('change', function (evt) {
+    getTimeValid(evt)
+  });
+
+  timeOutField.addEventListener('change', function (evt) {
+    getTimeValid(evt);
+  });
+
+  typeHousing.addEventListener('change', function (evt) {
+    getValidMinPrice(evt);
+  });
+
+  selectRoom.addEventListener('change', function () {
+    getValidQuantityRooms();
+  });
+
+  selectGuests.addEventListener('change', function () {
+    getValidQuantityRooms();
+  });
 
   var resetState = function () {
     form.reset();

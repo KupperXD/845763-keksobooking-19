@@ -105,7 +105,10 @@
     popupDescription.textContent = checkValue(obj.offer.description, popupDescription);
     getPhotoPopup(popupPhotos, obj.offer.photos);
     popupAvatar.src = checkValue(obj.author.avatar, popupAvatar);
-    closeButton.addEventListener('click', removeCard);
+
+    closeButton.addEventListener('click', function () {
+      removeCard();
+    });
 
     return popupCard;
   };

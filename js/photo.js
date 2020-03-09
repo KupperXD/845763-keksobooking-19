@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var FILES_TYPE = ['gif', 'jpg', 'jpeg', 'png'];
+  var TYPE_FILES = ['gif', 'jpg', 'jpeg', 'png'];
   var imgSizeMap = {
     avatar: {
       width: 40,
@@ -44,7 +44,7 @@
     var file = picture;
     var fileName = file.name.toLowerCase();
 
-    var matches = FILES_TYPE.some(function (it) {
+    var matches = TYPE_FILES.some(function (it) {
       return fileName.endsWith(it);
     });
 
