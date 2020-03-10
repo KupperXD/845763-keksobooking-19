@@ -75,7 +75,7 @@
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     setDisabled(fieldSetsForm, false);
     setDisabled(filterMap, false);
-    window.data.setDefault();
+    window.data.load();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
     active = true;

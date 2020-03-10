@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var FEATURES_NOT_DEFINED = -1;
   var PRICE = {
     min: 10000,
     max: 50000
@@ -28,7 +27,7 @@
 
   var filterByFeatures = function (itemList, value) {
     return itemList.filter(function (item) {
-      return item.offer.features.indexOf(value) !== FEATURES_NOT_DEFINED;
+      return item.offer.features.includes(value);
     });
   };
 

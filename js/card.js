@@ -17,8 +17,6 @@
 
     block.innerHTML = '';
     if (array.length) {
-      block.classList.add('hidden');
-    } else {
       array.forEach(function (item) {
         var featuresItem = document.createElement('li');
 
@@ -26,6 +24,8 @@
         fragment.appendChild(featuresItem);
       });
       block.appendChild(fragment);
+    } else {
+      block.classList.add('hidden');
     }
   };
 
@@ -33,9 +33,7 @@
     var fragment = document.createDocumentFragment();
 
     block.innerHTML = '';
-    if (!array.length) {
-      block.classList.add('hidden');
-    } else {
+    if (array.length) {
       array.forEach(function (item) {
         var photoItem = templatePhoto.cloneNode();
 
@@ -43,15 +41,17 @@
         fragment.appendChild(photoItem);
       });
       block.appendChild(fragment);
+    } else {
+      block.classList.add('hidden');
     }
   };
 
   var checkValue = function (value, block) {
-    if (!value) {
+    if (value) {
+      return value;
+    } else {
       block.classList.add('hidden');
     }
-
-    return value;
   };
 
   var removeCard = function () {
