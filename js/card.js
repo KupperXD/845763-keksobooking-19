@@ -47,11 +47,10 @@
   };
 
   var checkValue = function (value, block) {
-    if (value) {
-      return value;
-    } else {
+    if (!value) {
       block.classList.add('hidden');
     }
+    return value;
   };
 
   var removeCard = function () {
