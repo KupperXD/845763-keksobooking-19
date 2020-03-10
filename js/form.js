@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var MAX_ROOM  = 100;
+  var MAX_ROOM = 100;
   var MIN_GUEST = 0;
   var minPriceMap = {
     bungalo: 0,
@@ -108,7 +108,7 @@
   });
 
   timeInField.addEventListener('change', function (evt) {
-    getTimeValid(evt)
+    getTimeValid(evt);
   });
 
   timeOutField.addEventListener('change', function (evt) {
