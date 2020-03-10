@@ -12,7 +12,7 @@
     window.popup.addError(message);
   };
 
-  var defaultAdvert = function () {
+  var setDefaultAdvert = function () {
     window.server.load(successHandler, errorHandler);
   };
 
@@ -23,7 +23,7 @@
   };
 
   window.data = {
-    default: defaultAdvert,
+    setDefault: setDefaultAdvert,
     update: updateAdverts
   };
 })();

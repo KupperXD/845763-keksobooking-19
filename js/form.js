@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_ROOM  = 100;
+  var MIN_GUEST = 0;
   var minPriceMap = {
     bungalo: 0,
     flat: 1000,
@@ -39,9 +41,9 @@
 
     getBorder(selectRoom, 'red');
 
-    if (roomsNumber === 100 && guestsNumber !== 0) {
+    if (roomsNumber === MAX_ROOM && guestsNumber !== MIN_GUEST) {
       selectRoom.setCustomValidity('100 комнат не для гостей!');
-    } else if (roomsNumber !== 100 && guestsNumber === 0) {
+    } else if (roomsNumber !== MAX_ROOM && guestsNumber === MIN_GUEST) {
       selectRoom.setCustomValidity('Для 0 гостей подходит только 100 комнат');
     } else if (roomsNumber < guestsNumber) {
       selectRoom.setCustomValidity('Нужно больше комнат для ' + guestsNumber + ' гостей!');
@@ -141,7 +143,7 @@
   var successHandler = function () {
     resetState();
     window.popup.addSuccess();
-    window.map.disabledPage();
+    window.map.blockPage();
   };
 
   var errorHandler = function (message) {
@@ -152,7 +154,7 @@
   var clickButtonResetHandler = function (evt) {
     evt.preventDefault();
     resetState();
-    window.map.disabledPage();
+    window.map.blockPage();
   };
 
   form.addEventListener('submit', function (evt) {

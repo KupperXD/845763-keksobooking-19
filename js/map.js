@@ -5,7 +5,9 @@
   var LEFT_MOUSE_CLICK = 0;
   var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
+  var INDENTATION_DEFAULT = 0;
   var DEBOUNCE_INTERVAL = 500;
+  var NUMBER_DECIMAL_SYSTEM = 10;
   var Coords = {
     MIN_Y: 46,
     MAX_Y: 546,
@@ -35,8 +37,8 @@
   };
 
   var getCoordinate = function () {
-    var x = parseInt(mainMapPin.style.left, 10);
-    var y = parseInt(mainMapPin.style.top, 10);
+    var x = parseInt(mainMapPin.style.left, NUMBER_DECIMAL_SYSTEM);
+    var y = parseInt(mainMapPin.style.top, NUMBER_DECIMAL_SYSTEM);
 
     return {
       x: x,
@@ -54,26 +56,26 @@
 
   setDisabled(fieldSetsForm, true);
   setDisabled(filterMap, true);
-  writeInputAdress(0);
+  writeInputAdress(INDENTATION_DEFAULT);
 
-  var disabledPage = function () {
+  var blockPage = function () {
     window.utils.addClass('.map', 'map--faded');
     window.utils.addClass('.ad-form', 'ad-form--disabled');
     window.pin.delete();
     setDisabled(fieldSetsForm, true);
     setDisabled(filterMap, true);
-    writeInputAdress(0);
+    writeInputAdress(INDENTATION_DEFAULT);
     mainMapPin.addEventListener('keydown', pinKeyDownHandler);
     setDefaultCoords();
     active = false;
   };
 
-  var activePage = function () {
+  var activatePage = function () {
     window.utils.removeClass('.map', 'map--faded');
     window.utils.removeClass('.ad-form', 'ad-form--disabled');
     setDisabled(fieldSetsForm, false);
     setDisabled(filterMap, false);
-    window.data.default();
+    window.data.setDefault();
     writeInputAdress(INDENTATION_PIN);
     mainMapPin.removeEventListener('keydown', pinKeyDownHandler);
     active = true;
@@ -81,7 +83,7 @@
 
   var pinKeyDownHandler = function (evt) {
     if (evt.key === ENTER_KEY) {
-      activePage();
+      activatePage();
     }
   };
 
@@ -134,7 +136,7 @@
         upEvt.preventDefault();
 
         if (!active) {
-          activePage();
+          activatePage();
         }
 
         document.removeEventListener('mousemove', pinMoveMouseHandler);
@@ -155,6 +157,6 @@
   filterForm.addEventListener('change', changeFilterHandler);
 
   window.map = {
-    disabledPage: disabledPage
+    blockPage: blockPage
   };
 })();

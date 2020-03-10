@@ -16,7 +16,7 @@
     var fragment = document.createDocumentFragment();
 
     block.innerHTML = '';
-    if (array.length === 0) {
+    if (array.length) {
       block.classList.add('hidden');
     } else {
       array.forEach(function (item) {
@@ -33,7 +33,7 @@
     var fragment = document.createDocumentFragment();
 
     block.innerHTML = '';
-    if (array.length === 0) {
+    if (!array.length) {
       block.classList.add('hidden');
     } else {
       array.forEach(function (item) {
@@ -47,7 +47,7 @@
   };
 
   var checkValue = function (value, block) {
-    if (value === undefined) {
+    if (!value) {
       block.classList.add('hidden');
     }
 

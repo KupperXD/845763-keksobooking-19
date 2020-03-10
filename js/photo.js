@@ -2,6 +2,7 @@
 
 (function () {
   var TYPE_FILES = ['gif', 'jpg', 'jpeg', 'png'];
+  var DEFAULT_BORDER_DRAG_DROP = '#ff5635';
   var imgSizeMap = {
     avatar: {
       width: 40,
@@ -67,7 +68,7 @@
     input.addEventListener('dragenter', function (enterEvt) {
       enterEvt.preventDefault();
       enterEvt.stopPropagation();
-      input.style.borderColor = '#ff5635';
+      input.style.borderColor = DEFAULT_BORDER_DRAG_DROP;
     });
     input.addEventListener('dragleave', function (leaveEvt) {
       leaveEvt.preventDefault();
@@ -77,7 +78,7 @@
     input.addEventListener('dragover', function (overEvt) {
       overEvt.preventDefault();
       overEvt.stopPropagation();
-      input.style.borderColor = '#ff5635';
+      input.style.borderColor = DEFAULT_BORDER_DRAG_DROP;
     });
     input.addEventListener('drop', function (dropEvt) {
       dropEvt.preventDefault();

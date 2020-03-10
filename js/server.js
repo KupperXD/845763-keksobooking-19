@@ -3,6 +3,7 @@
 (function () {
   var OK_STATUS = 200;
   var URL = 'https://js.dump.academy/keksobooking';
+  var TIMEOUT = 10000;
   var errorMessageMap = {
     400: 'Неверный запрос',
     401: 'Пользователь не авторизован',
@@ -15,7 +16,7 @@
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
     xhr.addEventListener('load', function () {
       if (xhr.status === OK_STATUS) {
         successHandler(xhr.response);
