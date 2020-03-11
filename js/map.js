@@ -6,7 +6,6 @@
   var INDENTATION_PIN = 52;
   var HALF_SIZE_PIN = 32;
   var INDENTATION_DEFAULT = 0;
-  var DEBOUNCE_INTERVAL = 500;
   var NUMBER_DECIMAL_SYSTEM = 10;
   var Coords = {
     MIN_Y: 46,
@@ -148,10 +147,9 @@
     }
   });
 
-
-  var changeFilterHandler = function () {
-    window.utils.debounce(window.data.update, DEBOUNCE_INTERVAL)();
-  };
+  var changeFilterHandler = window.utils.debounce(function () {
+    window.data.update();
+  });
 
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   filterForm.addEventListener('change', changeFilterHandler);

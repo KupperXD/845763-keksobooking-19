@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
   var removeClass = function (block, nameClass) {
     document.querySelector(block).classList.remove(nameClass);
   };
@@ -9,7 +11,7 @@
     document.querySelector(block).classList.add(nameClass);
   };
 
-  var debounce = function (fn, interval) {
+  var debounce = function (fn) {
     var lastTimeout = null;
 
     return function () {
@@ -20,7 +22,7 @@
       }
       lastTimeout = window.setTimeout(function () {
         fn.apply(null, parameters);
-      }, interval);
+      }, DEBOUNCE_INTERVAL);
     };
   };
 
