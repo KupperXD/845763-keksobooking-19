@@ -147,9 +147,7 @@
     }
   });
 
-  var changeFilterHandler = window.utils.debounce(function () {
-    window.data.update();
-  });
+  var changeFilterHandler = window.utils.debounce(window.data.update);
 
   mainMapPin.addEventListener('keydown', pinKeyDownHandler);
   filterForm.addEventListener('change', changeFilterHandler);
